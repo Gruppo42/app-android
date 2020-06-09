@@ -1,0 +1,674 @@
+[
+  {
+    "iso639_1": "ps",
+    "iso639_2": "pus",
+    "name": "Pashto",
+    "nativeName": "\u067e\u069a\u062a\u0648"
+  },
+  {
+    "iso639_1": "uz",
+    "iso639_2": "uzb",
+    "name": "Uzbek",
+    "nativeName": "O\u02bbzbek"
+  },
+  {
+    "iso639_1": "tk",
+    "iso639_2": "tuk",
+    "name": "Turkmen",
+    "nativeName": "T\u00fcrkmen"
+  },
+  {
+    "iso639_1": "sv",
+    "iso639_2": "swe",
+    "name": "Swedish",
+    "nativeName": "svenska"
+  },
+  {
+    "iso639_1": "sq",
+    "iso639_2": "sqi",
+    "name": "Albanian",
+    "nativeName": "Shqip"
+  },
+  {
+    "iso639_1": "ar",
+    "iso639_2": "ara",
+    "name": "Arabic",
+    "nativeName": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629"
+  },
+  {
+    "iso639_1": "en",
+    "iso639_2": "eng",
+    "name": "English",
+    "nativeName": "English"
+  },
+  {
+    "iso639_1": "sm",
+    "iso639_2": "smo",
+    "name": "Samoan",
+    "nativeName": "gagana fa'a Samoa"
+  },
+  {
+    "iso639_1": "ca",
+    "iso639_2": "cat",
+    "name": "Catalan",
+    "nativeName": "catal\u00e0"
+  },
+  {
+    "iso639_1": "pt",
+    "iso639_2": "por",
+    "name": "Portuguese",
+    "nativeName": "Portugu\u00eas"
+  },
+  {
+    "iso639_1": "ru",
+    "iso639_2": "rus",
+    "name": "Russian",
+    "nativeName": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"
+  },
+  {
+    "iso639_1": "es",
+    "iso639_2": "spa",
+    "name": "Spanish",
+    "nativeName": "Espa\u00f1ol"
+  },
+  {
+    "iso639_1": "gn",
+    "iso639_2": "grn",
+    "name": "Guaran\u00ed",
+    "nativeName": "Ava\u00f1e'\u1ebd"
+  },
+  {
+    "iso639_1": "hy",
+    "iso639_2": "hye",
+    "name": "Armenian",
+    "nativeName": "\u0540\u0561\u0575\u0565\u0580\u0565\u0576"
+  },
+  {
+    "iso639_1": "nl",
+    "iso639_2": "nld",
+    "name": "Dutch",
+    "nativeName": "Nederlands"
+  },
+  {
+    "iso639_1": "pa",
+    "iso639_2": "pan",
+    "name": "(Eastern) Punjabi",
+    "nativeName": "\u0a2a\u0a70\u0a1c\u0a3e\u0a2c\u0a40"
+  },
+  {
+    "iso639_1": "de",
+    "iso639_2": "deu",
+    "name": "German",
+    "nativeName": "Deutsch"
+  },
+  {
+    "iso639_1": "az",
+    "iso639_2": "aze",
+    "name": "Azerbaijani",
+    "nativeName": "az\u0259rbaycan dili"
+  },
+  {
+    "iso639_1": "bn",
+    "iso639_2": "ben",
+    "name": "Bengali",
+    "nativeName": "\u09ac\u09be\u0982\u09b2\u09be"
+  },
+  {
+    "iso639_1": "be",
+    "iso639_2": "bel",
+    "name": "Belarusian",
+    "nativeName": "\u0431\u0435\u043b\u0430\u0440\u0443\u0441\u043a\u0430\u044f \u043c\u043e\u0432\u0430"
+  },
+  {
+    "iso639_1": "fr",
+    "iso639_2": "fra",
+    "name": "French",
+    "nativeName": "fran\u00e7ais"
+  },
+  {
+    "iso639_1": "dz",
+    "iso639_2": "dzo",
+    "name": "Dzongkha",
+    "nativeName": "\u0f62\u0fab\u0f7c\u0f44\u0f0b\u0f41"
+  },
+  {
+    "iso639_1": "ay",
+    "iso639_2": "aym",
+    "name": "Aymara",
+    "nativeName": "aymar aru"
+  },
+  {
+    "iso639_1": "qu",
+    "iso639_2": "que",
+    "name": "Quechua",
+    "nativeName": "Runa Simi"
+  },
+  {
+    "iso639_1": "bs",
+    "iso639_2": "bos",
+    "name": "Bosnian",
+    "nativeName": "bosanski jezik"
+  },
+  {
+    "iso639_1": "hr",
+    "iso639_2": "hrv",
+    "name": "Croatian",
+    "nativeName": "hrvatski jezik"
+  },
+  {
+    "iso639_1": "sr",
+    "iso639_2": "srp",
+    "name": "Serbian",
+    "nativeName": "\u0441\u0440\u043f\u0441\u043a\u0438 \u0458\u0435\u0437\u0438\u043a"
+  },
+  {
+    "iso639_1": "tn",
+    "iso639_2": "tsn",
+    "name": "Tswana",
+    "nativeName": "Setswana"
+  },
+  {
+    "iso639_1": "no",
+    "iso639_2": "nor",
+    "name": "Norwegian",
+    "nativeName": "Norsk"
+  },
+  {
+    "iso639_1": "nb",
+    "iso639_2": "nob",
+    "name": "Norwegian Bokm\u00e5l",
+    "nativeName": "Norsk bokm\u00e5l"
+  },
+  {
+    "iso639_1": "nn",
+    "iso639_2": "nno",
+    "name": "Norwegian Nynorsk",
+    "nativeName": "Norsk nynorsk"
+  },
+  {
+    "iso639_1": "ms",
+    "iso639_2": "msa",
+    "name": "Malay",
+    "nativeName": "bahasa Melayu"
+  },
+  {
+    "iso639_1": "bg",
+    "iso639_2": "bul",
+    "name": "Bulgarian",
+    "nativeName": "\u0431\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438 \u0435\u0437\u0438\u043a"
+  },
+  {
+    "iso639_1": "ff",
+    "iso639_2": "ful",
+    "name": "Fula",
+    "nativeName": "Fulfulde"
+  },
+  {
+    "iso639_1": "rn",
+    "iso639_2": "run",
+    "name": "Kirundi",
+    "nativeName": "Ikirundi"
+  },
+  {
+    "iso639_1": "km",
+    "iso639_2": "khm",
+    "name": "Khmer",
+    "nativeName": "\u1781\u17d2\u1798\u17c2\u179a"
+  },
+  {
+    "iso639_1": "sg",
+    "iso639_2": "sag",
+    "name": "Sango",
+    "nativeName": "y\u00e2ng\u00e2 t\u00ee s\u00e4ng\u00f6"
+  },
+  {
+    "iso639_1": "zh",
+    "iso639_2": "zho",
+    "name": "Chinese",
+    "nativeName": "\u4e2d\u6587 (Zh\u014dngw\u00e9n)"
+  },
+  {
+    "iso639_1": "ln",
+    "iso639_2": "lin",
+    "name": "Lingala",
+    "nativeName": "Ling\u00e1la"
+  },
+  {
+    "iso639_1": "kg",
+    "iso639_2": "kon",
+    "name": "Kongo",
+    "nativeName": "Kikongo"
+  },
+  {
+    "iso639_1": "sw",
+    "iso639_2": "swa",
+    "name": "Swahili",
+    "nativeName": "Kiswahili"
+  },
+  {
+    "iso639_1": "lu",
+    "iso639_2": "lub",
+    "name": "Luba-Katanga",
+    "nativeName": "Tshiluba"
+  },
+  {
+    "iso639_1": "el",
+    "iso639_2": "ell",
+    "name": "Greek (modern)",
+    "nativeName": "\u03b5\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac"
+  },
+  {
+    "iso639_1": "tr",
+    "iso639_2": "tur",
+    "name": "Turkish",
+    "nativeName": "T\u00fcrk\u00e7e"
+  },
+  {
+    "iso639_1": "cs",
+    "iso639_2": "ces",
+    "name": "Czech",
+    "nativeName": "\u010de\u0161tina"
+  },
+  {
+    "iso639_1": "sk",
+    "iso639_2": "slk",
+    "name": "Slovak",
+    "nativeName": "sloven\u010dina"
+  },
+  {
+    "iso639_1": "da",
+    "iso639_2": "dan",
+    "name": "Danish",
+    "nativeName": "dansk"
+  },
+  {
+    "iso639_1": "ti",
+    "iso639_2": "tir",
+    "name": "Tigrinya",
+    "nativeName": "\u1275\u130d\u122d\u129b"
+  },
+  {
+    "iso639_1": "et",
+    "iso639_2": "est",
+    "name": "Estonian",
+    "nativeName": "eesti"
+  },
+  {
+    "iso639_1": "am",
+    "iso639_2": "amh",
+    "name": "Amharic",
+    "nativeName": "\u12a0\u121b\u122d\u129b"
+  },
+  {
+    "iso639_1": "fo",
+    "iso639_2": "fao",
+    "name": "Faroese",
+    "nativeName": "f\u00f8royskt"
+  },
+  {
+    "iso639_1": "fj",
+    "iso639_2": "fij",
+    "name": "Fijian",
+    "nativeName": "vosa Vakaviti"
+  },
+  {
+    "iso639_1": "hi",
+    "iso639_2": "hin",
+    "name": "Hindi",
+    "nativeName": "\u0939\u093f\u0928\u094d\u0926\u0940"
+  },
+  {
+    "iso639_1": "ur",
+    "iso639_2": "urd",
+    "name": "Urdu",
+    "nativeName": "\u0627\u0631\u062f\u0648"
+  },
+  {
+    "iso639_1": "fi",
+    "iso639_2": "fin",
+    "name": "Finnish",
+    "nativeName": "suomi"
+  },
+  {
+    "iso639_1": "ka",
+    "iso639_2": "kat",
+    "name": "Georgian",
+    "nativeName": "\u10e5\u10d0\u10e0\u10d7\u10e3\u10da\u10d8"
+  },
+  {
+    "iso639_1": "kl",
+    "iso639_2": "kal",
+    "name": "Kalaallisut",
+    "nativeName": "kalaallisut"
+  },
+  {
+    "iso639_1": "ch",
+    "iso639_2": "cha",
+    "name": "Chamorro",
+    "nativeName": "Chamoru"
+  },
+  {
+    "iso639_1": "ht",
+    "iso639_2": "hat",
+    "name": "Haitian",
+    "nativeName": "Krey\u00f2l ayisyen"
+  },
+  {
+    "iso639_1": "la",
+    "iso639_2": "lat",
+    "name": "Latin",
+    "nativeName": "latine"
+  },
+  {
+    "iso639_1": "it",
+    "iso639_2": "ita",
+    "name": "Italian",
+    "nativeName": "Italiano"
+  },
+  {
+    "iso639_1": "hu",
+    "iso639_2": "hun",
+    "name": "Hungarian",
+    "nativeName": "magyar"
+  },
+  {
+    "iso639_1": "is",
+    "iso639_2": "isl",
+    "name": "Icelandic",
+    "nativeName": "\u00cdslenska"
+  },
+  {
+    "iso639_1": "id",
+    "iso639_2": "ind",
+    "name": "Indonesian",
+    "nativeName": "Bahasa Indonesia"
+  },
+  {
+    "iso639_1": "fa",
+    "iso639_2": "fas",
+    "name": "Persian (Farsi)",
+    "nativeName": "\u0641\u0627\u0631\u0633\u06cc"
+  },
+  {
+    "iso639_1": "ku",
+    "iso639_2": "kur",
+    "name": "Kurdish",
+    "nativeName": "Kurd\u00ee"
+  },
+  {
+    "iso639_1": "ga",
+    "iso639_2": "gle",
+    "name": "Irish",
+    "nativeName": "Gaeilge"
+  },
+  {
+    "iso639_1": "gv",
+    "iso639_2": "glv",
+    "name": "Manx",
+    "nativeName": "Gaelg"
+  },
+  {
+    "iso639_1": "he",
+    "iso639_2": "heb",
+    "name": "Hebrew (modern)",
+    "nativeName": "\u05e2\u05d1\u05e8\u05d9\u05ea"
+  },
+  {
+    "iso639_1": "ja",
+    "iso639_2": "jpn",
+    "name": "Japanese",
+    "nativeName": "\u65e5\u672c\u8a9e (\u306b\u307b\u3093\u3054)"
+  },
+  {
+    "iso639_1": "kk",
+    "iso639_2": "kaz",
+    "name": "Kazakh",
+    "nativeName": "\u049b\u0430\u0437\u0430\u049b \u0442\u0456\u043b\u0456"
+  },
+  {
+    "iso639_1": "ky",
+    "iso639_2": "kir",
+    "name": "Kyrgyz",
+    "nativeName": "\u041a\u044b\u0440\u0433\u044b\u0437\u0447\u0430"
+  },
+  {
+    "iso639_1": "lo",
+    "iso639_2": "lao",
+    "name": "Lao",
+    "nativeName": "\u0e9e\u0eb2\u0eaa\u0eb2\u0ea5\u0eb2\u0ea7"
+  },
+  {
+    "iso639_1": "lv",
+    "iso639_2": "lav",
+    "name": "Latvian",
+    "nativeName": "latvie\u0161u valoda"
+  },
+  {
+    "iso639_1": "st",
+    "iso639_2": "sot",
+    "name": "Southern Sotho",
+    "nativeName": "Sesotho"
+  },
+  {
+    "iso639_1": "lt",
+    "iso639_2": "lit",
+    "name": "Lithuanian",
+    "nativeName": "lietuvi\u0173 kalba"
+  },
+  {
+    "iso639_1": "lb",
+    "iso639_2": "ltz",
+    "name": "Luxembourgish",
+    "nativeName": "L\u00ebtzebuergesch"
+  },
+  {
+    "iso639_1": "mk",
+    "iso639_2": "mkd",
+    "name": "Macedonian",
+    "nativeName": "\u043c\u0430\u043a\u0435\u0434\u043e\u043d\u0441\u043a\u0438 \u0458\u0430\u0437\u0438\u043a"
+  },
+  {
+    "iso639_1": "mg",
+    "iso639_2": "mlg",
+    "name": "Malagasy",
+    "nativeName": "fiteny malagasy"
+  },
+  {
+    "iso639_1": "ny",
+    "iso639_2": "nya",
+    "name": "Chichewa",
+    "nativeName": "chiChe\u0175a"
+  },
+  {
+    "iso639_1": null,
+    "iso639_2": "zsm",
+    "name": "Malaysian",
+    "nativeName": "\u0628\u0647\u0627\u0633 \u0645\u0644\u064a\u0633\u064a\u0627"
+  },
+  {
+    "iso639_1": "dv",
+    "iso639_2": "div",
+    "name": "Divehi",
+    "nativeName": "\u078b\u07a8\u0788\u07ac\u0780\u07a8"
+  },
+  {
+    "iso639_1": "mt",
+    "iso639_2": "mlt",
+    "name": "Maltese",
+    "nativeName": "Malti"
+  },
+  {
+    "iso639_1": "mh",
+    "iso639_2": "mah",
+    "name": "Marshallese",
+    "nativeName": "Kajin M\u0327aje\u013c"
+  },
+  {
+    "iso639_1": "ro",
+    "iso639_2": "ron",
+    "name": "Romanian",
+    "nativeName": "Rom\u00e2n\u0103"
+  },
+  {
+    "iso639_1": "mn",
+    "iso639_2": "mon",
+    "name": "Mongolian",
+    "nativeName": "\u041c\u043e\u043d\u0433\u043e\u043b \u0445\u044d\u043b"
+  },
+  {
+    "iso639_1": "my",
+    "iso639_2": "mya",
+    "name": "Burmese",
+    "nativeName": "\u1017\u1019\u102c\u1005\u102c"
+  },
+  {
+    "iso639_1": "af",
+    "iso639_2": "afr",
+    "name": "Afrikaans",
+    "nativeName": "Afrikaans"
+  },
+  {
+    "iso639_1": "na",
+    "iso639_2": "nau",
+    "name": "Nauruan",
+    "nativeName": "Dorerin Naoero"
+  },
+  {
+    "iso639_1": "ne",
+    "iso639_2": "nep",
+    "name": "Nepali",
+    "nativeName": "\u0928\u0947\u092a\u093e\u0932\u0940"
+  },
+  {
+    "iso639_1": "mi",
+    "iso639_2": "mri",
+    "name": "M\u0101ori",
+    "nativeName": "te reo M\u0101ori"
+  },
+  {
+    "iso639_1": "ko",
+    "iso639_2": "kor",
+    "name": "Korean",
+    "nativeName": "\ud55c\uad6d\uc5b4"
+  },
+  {
+    "iso639_1": "pl",
+    "iso639_2": "pol",
+    "name": "Polish",
+    "nativeName": "j\u0119zyk polski"
+  },
+  {
+    "iso639_1": "rw",
+    "iso639_2": "kin",
+    "name": "Kinyarwanda",
+    "nativeName": "Ikinyarwanda"
+  },
+  {
+    "iso639_1": "ta",
+    "iso639_2": "tam",
+    "name": "Tamil",
+    "nativeName": "\u0ba4\u0bae\u0bbf\u0bb4\u0bcd"
+  },
+  {
+    "iso639_1": "sl",
+    "iso639_2": "slv",
+    "name": "Slovene",
+    "nativeName": "slovenski jezik"
+  },
+  {
+    "iso639_1": "so",
+    "iso639_2": "som",
+    "name": "Somali",
+    "nativeName": "Soomaaliga"
+  },
+  {
+    "iso639_1": "nr",
+    "iso639_2": "nbl",
+    "name": "Southern Ndebele",
+    "nativeName": "isiNdebele"
+  },
+  {
+    "iso639_1": "ss",
+    "iso639_2": "ssw",
+    "name": "Swati",
+    "nativeName": "SiSwati"
+  },
+  {
+    "iso639_1": "ts",
+    "iso639_2": "tso",
+    "name": "Tsonga",
+    "nativeName": "Xitsonga"
+  },
+  {
+    "iso639_1": "ve",
+    "iso639_2": "ven",
+    "name": "Venda",
+    "nativeName": "Tshiven\u1e13a"
+  },
+  {
+    "iso639_1": "xh",
+    "iso639_2": "xho",
+    "name": "Xhosa",
+    "nativeName": "isiXhosa"
+  },
+  {
+    "iso639_1": "zu",
+    "iso639_2": "zul",
+    "name": "Zulu",
+    "nativeName": "isiZulu"
+  },
+  {
+    "iso639_1": "si",
+    "iso639_2": "sin",
+    "name": "Sinhalese",
+    "nativeName": "\u0dc3\u0dd2\u0d82\u0dc4\u0dbd"
+  },
+  {
+    "iso639_1": "tg",
+    "iso639_2": "tgk",
+    "name": "Tajik",
+    "nativeName": "\u0442\u043e\u04b7\u0438\u043a\u04e3"
+  },
+  {
+    "iso639_1": "th",
+    "iso639_2": "tha",
+    "name": "Thai",
+    "nativeName": "\u0e44\u0e17\u0e22"
+  },
+  {
+    "iso639_1": "to",
+    "iso639_2": "ton",
+    "name": "Tonga (Tonga Islands)",
+    "nativeName": "faka Tonga"
+  },
+  {
+    "iso639_1": "uk",
+    "iso639_2": "ukr",
+    "name": "Ukrainian",
+    "nativeName": "\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430"
+  },
+  {
+    "iso639_1": "bi",
+    "iso639_2": "bis",
+    "name": "Bislama",
+    "nativeName": "Bislama"
+  },
+  {
+    "iso639_1": "vi",
+    "iso639_2": "vie",
+    "name": "Vietnamese",
+    "nativeName": "Ti\u1ebfng Vi\u1ec7t"
+  },
+  {
+    "iso639_1": "sn",
+    "iso639_2": "sna",
+    "name": "Shona",
+    "nativeName": "chiShona"
+  },
+  {
+    "iso639_1": "nd",
+    "iso639_2": "nde",
+    "name": "Northern Ndebele",
+    "nativeName": "isiNdebele"
+  }
+]

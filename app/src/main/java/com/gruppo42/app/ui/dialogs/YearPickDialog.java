@@ -45,7 +45,7 @@ public class YearPickDialog extends DialogFragment {
         });
         builder.setView(view)
                 .setTitle(getString(R.string.year_select))
-                .setPositiveButton("Sumbit", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         listener.onChange(numberPicker.getValue());

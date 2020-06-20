@@ -1,7 +1,5 @@
 package com.gruppo42.app.api.models;
 
-import android.graphics.Bitmap;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class MovieItem
     private String imageUrl;
     private String imageUrlSecondary;
 
-    public MovieItem(QueryResultDTO.ResultDTO result)
+    public MovieItem(ResultDTO result)
     {
         this.id = result.id;
         this.title = result.getTitle();

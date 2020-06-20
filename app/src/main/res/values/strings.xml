@@ -1,17 +1,37 @@
 <resources>
-    <string name="app_name">app2</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">Cinemania</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="user">User</string>
     <string name="filter_button">Filtra</string>
     <string name="year_select">Select year</string>
     <string name="genre_select">Select genre</string>
     <string name="region_select">Select region</string>
     <string name="language_select">Select language</string>
-    <string name="apitoken">aca1b28e5260b80b1d7852807831fa93</string>
+    <!--<string name="apitoken">aca1b28e5260b80b1d7852807831fa93</string>-->
     <string name="emptysearchresults">Nothing found</string>
     <string name="cancel">Cancel</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">Submit</string>
+
+    <string name="upcoming">Upcoming Movies</string>
+    <string name="action">Action Movies</string>
+    <string name="adventure">Adventure Movies</string>
+    <string name="animation">Animation Movies</string>
+    <string name="comedy">Comedy Movies</string>
+    <string name="crime">Crime Movies</string>
+    <string name="documentary">Documentary Movies</string>
+    <string name="drama">Drama Movies</string>
+    <string name="family">Family Movies</string>
+    <string name="fantasy">Fantasy Movies</string>
+    <string name="history">History Movies</string>
+    <string name="horror">Horror Movies</string>
+    <string name="music">Music Movies</string>
+    <string name="mystery">Mystery Movies</string>
+    <string name="romance">Romance Movies</string>
+    <string name="science_fiction">Science Fiction Movies</string>
+    <string name="thriller">Thriller Movies</string>
+    <string name="war">War Movies</string>
+    <string name="western">Western Movies</string>
 </resources>

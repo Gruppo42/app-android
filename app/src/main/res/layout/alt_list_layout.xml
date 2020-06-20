@@ -36,14 +36,15 @@
             android:layout_height="141dp"
             android:background="@drawable/round_outline"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_placeholder" />
+            app:srcCompat="@drawable/ic_placeholder"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="134dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -58,8 +59,9 @@
                     android:layout_toEndOf="@+id/imageView"
                     android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#000000"
-                    tools:text="John Wick" />
+                    android:textColor="@android:color/white"
+                    tools:text="John Wick"
+                    android:layout_toRightOf="@+id/imageView" />
 
                 <TextView
                     android:id="@+id/movieYear"
@@ -68,9 +70,11 @@
                     android:layout_below="@+id/movieTitle"
                     android:layout_marginTop="0dp"
                     android:layout_marginEnd="50dp"
+                    android:textColor="@android:color/white"
                     android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    tools:text="2014" />
+                    tools:text="2014"
+                    android:layout_marginRight="50dp" />
             </LinearLayout>
 
             <TextView
@@ -78,6 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="32dp"
+                android:textColor="@android:color/white"
                 android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of hav..."
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

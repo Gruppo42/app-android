@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieApi {
@@ -20,6 +21,15 @@ public interface MovieApi {
                                        @Query("query") String query,
                                        @Query("region") String region,
                                        @Query("primary_release_year") String year);
+    @GET("trending/{media_type}/{time_window}")
+    Call<QueryResultDTO> getTrendingMovies(@Path("media_type") String media_type,
+                                           @Path("time_window") String time_window,
+                                           @Query("api_key") String api_key);
+    @GET("discover/movie")
+    Call<QueryResultDTO> getMoviesByDateOrGenre(@Query("page") int page,
+                                                @Query("primary_release_date.gte") String primary_release_date_gte,
+                                                @Query("with_genres") String with_genres,
+                                                @Query("api_key") String api_key);
 
     class Instance {
 

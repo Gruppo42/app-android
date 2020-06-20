@@ -61,10 +61,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter(List<MovieItem> filmItemList,
                                Context context,
                                RecyclerView recyclerView,
-                               View noDataFound,
-                               Retrofit api) {
+                               View noDataFound) {
         this.filmItemList = filmItemList;
-        this.api = api.create(MovieApi.class);
+        this.api = MovieApi.Instance.get();
         this.context = context;
         this.recyclerView = recyclerView;
         calendar = new GregorianCalendar();
@@ -82,12 +81,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public RecyclerViewAdapter(Context context,
                                RecyclerView recyclerView,
-                               View noDataFound,
-                               Retrofit api) {
+                               View noDataFound) {
         this.maxPages = -1;
         this.currentPage = -1;
         this.filmItemList = new ArrayList<>();
-        this.api = api.create(MovieApi.class);
+        this.api = MovieApi.Instance.get();
         this.context = context;
         this.recyclerView = recyclerView;
         calendar = new GregorianCalendar();
@@ -115,7 +113,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         MovieItem item = filmItemList.get(position);
         Glide
                 .with(this.context)
-                .load("https://image.tmdb.org/t/p/w94_and_h141_bestv2/"+item.getImageUrl())
+                .load("https://image.tmdb.org/t/p/w300/"+item.getImageUrl())
                 .fallback(R.drawable.ic_placeholder_err)
                 .error(R.drawable.ic_placeholder_err)
                 .transition(GenericTransitionOptions.with(R.transition.zoomin))
@@ -139,7 +137,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .into(holder.imageView);
         holder.title.setText(item.getTitle());
         holder.year.setText(item.getYear());
-
     }
 
     @Override

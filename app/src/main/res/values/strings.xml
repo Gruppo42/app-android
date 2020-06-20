@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">app2</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_search">Search</string>
     <string name="filter_button">Filtra</string>
     <string name="year_select">Select year</string>
     <string name="genre_select">Select genre</string>
@@ -10,6 +10,7 @@
     <string name="language_select">Select language</string>
     <string name="apitoken">aca1b28e5260b80b1d7852807831fa93</string>
     <string name="emptysearchresults">Nothing found</string>
+    <string name="nomoviesfound">No movies</string>
     <string name="cancel">Cancel</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

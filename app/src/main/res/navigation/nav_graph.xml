@@ -20,7 +20,7 @@
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.gruppo42.app.ui.user.UserFragment"
+        android:name="com.gruppo42.app.ui.profile.ProfileFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" />
     <fragment

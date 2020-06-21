@@ -44,7 +44,6 @@ public class SearchFragment extends Fragment
     private final String endpoint = "https://api.themoviedb.org/3/";
     private SearchViewModel searchViewModel;
     private TextView view2;
-    private Retrofit api;
     private Map<String, String> params;
     private ArrayList<RegionsDTO.Region> regions;
     private ArrayList<LanguagesDTO.Language> languages;
@@ -57,7 +56,6 @@ public class SearchFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         this.params = new HashMap<>();
-        initApis();
         loadJSONObjects();
         View root = inflater.inflate(R.layout.fragment_search, container, false);
         toolbar = root.findViewById(R.id.toolbar);
@@ -66,7 +64,7 @@ public class SearchFragment extends Fragment
         yearChip = root.findViewById(R.id.chipYear);
         recyclerView = root.findViewById(R.id.searchRecycler);
         View noDataview = root.findViewById(R.id.textView4);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), recyclerView, noDataview, api);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), recyclerView, noDataview);
         ArrayList<MovieItem> filmItems = new ArrayList<>();
         ArrayList<String> generes = new ArrayList<>();
         generes.add("Thriller");
@@ -251,12 +249,6 @@ public class SearchFragment extends Fragment
         Log.d("SIZE", this.languages.size()+"");
     }
 
-    private void initApis() {
-        this.api = new Retrofit.Builder()
-                .baseUrl(this.endpoint)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
     private void performQuery(String query, RecyclerViewAdapter adapter, View noDataview)
     {
         Log.d("performQuery", "performing query with:" +

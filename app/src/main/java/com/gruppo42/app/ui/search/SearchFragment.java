@@ -28,6 +28,7 @@ package com.gruppo42.app.ui.search;
         import com.google.android.material.chip.Chip;
         import com.google.gson.Gson;
         import com.google.gson.reflect.TypeToken;
+        import com.gruppo42.app.utils.Constants;
 
         import java.lang.reflect.Type;
         import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class SearchFragment extends Fragment
                              ViewGroup container, Bundle savedInstanceState) {
         this.params = new HashMap<>();
         loadJSONObjects();
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View root = inflater.inflate(R.layout.fragment_search, container, false);
         toolbar = root.findViewById(R.id.toolbar);
         languageChip = root.findViewById(R.id.chipLanguage);
         regionChip = root.findViewById(R.id.chipRegion);
@@ -255,7 +256,7 @@ public class SearchFragment extends Fragment
                                         "\nQuery: " + query+
                                         "\nRegion: "+params.get("region")+
                                         "\nYear: "+params.get("year"));
-        adapter.findMovieWith(getString(R.string.apitoken),
+        adapter.findMovieWith((Constants.MOVIES_API_KEY),
                 params.get("language"),
                 query,
                 params.get("region"),

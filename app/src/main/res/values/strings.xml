@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">app2</string>
+    <string name="app_name">Cinemania</string>
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
     <string name="title_search">Search</string>
@@ -20,4 +20,24 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">Submit</string>
+
+    <string name="upcoming">Upcoming Movies</string>
+    <string name="action">Action Movies</string>
+    <string name="adventure">Adventure Movies</string>
+    <string name="animation">Animation Movies</string>
+    <string name="comedy">Comedy Movies</string>
+    <string name="crime">Crime Movies</string>
+    <string name="documentary">Documentary Movies</string>
+    <string name="drama">Drama Movies</string>
+    <string name="family">Family Movies</string>
+    <string name="fantasy">Fantasy Movies</string>
+    <string name="history">History Movies</string>
+    <string name="horror">Horror Movies</string>
+    <string name="music">Music Movies</string>
+    <string name="mystery">Mystery Movies</string>
+    <string name="romance">Romance Movies</string>
+    <string name="science_fiction">Science Fiction Movies</string>
+    <string name="thriller">Thriller Movies</string>
+    <string name="war">War Movies</string>
+    <string name="western">Western Movies</string>
 </resources>

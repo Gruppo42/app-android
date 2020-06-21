@@ -2,6 +2,7 @@ package com.gruppo42.app.ui.search;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.GenericTransitionOptions;
@@ -25,6 +27,7 @@ import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.chip.ChipGroup;
+import com.gruppo42.app.api.models.ResultDTO;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -100,6 +103,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String year = null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @NonNull
     @Override
     public FilmViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -114,8 +118,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Glide
                 .with(this.context)
                 .load("https://image.tmdb.org/t/p/w300/"+item.getImageUrl())
-                .fallback(R.drawable.ic_placeholder_err)
-                .error(R.drawable.ic_placeholder_err)
+                .fallback(R.drawable.baseline_movie_white_48dp)
+                .error(R.drawable.baseline_movie_white_48dp)
                 .transition(GenericTransitionOptions.with(R.transition.zoomin))
                 .centerCrop()
                 .listener(new RequestListener<Drawable>() {
@@ -177,7 +181,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     listener.onEmptyResult();
                 else
                     listener.onResult();
-                for(QueryResultDTO.ResultDTO res : results.getResults())
+                for(ResultDTO res : results.getResults())
                     filmItemList.add(new MovieItem(res));
                 notifyDataSetChanged();
                 Log.d("SEARCH", "Found " + results.getTotal_results() + " results");
@@ -217,7 +221,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                     else
                         listener.onResult();
-                    for(QueryResultDTO.ResultDTO res : results.getResults())
+                    for(ResultDTO res : results.getResults())
                         filmItemList.add(new MovieItem(res));
                     notifyItemRangeInserted(filmItemList.size(), results.getResults().size());
                     Log.d("SEARCHr", "Found " + results.getTotal_results() + " results");
@@ -245,6 +249,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView year;
         ChipGroup chipGroup;
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         public FilmViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);

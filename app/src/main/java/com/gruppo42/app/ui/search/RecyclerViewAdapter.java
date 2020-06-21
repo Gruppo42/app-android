@@ -117,15 +117,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         MovieItem item = filmItemList.get(position);
         Glide
                 .with(this.context)
-<<<<<<< HEAD
-                .load("https://image.tmdb.org/t/p/w94_and_h141_bestv2/"+item.getImageUrl())
+                .load("https://image.tmdb.org/t/p/w300/"+item.getImageUrl())
                 .fallback(R.drawable.baseline_movie_white_48dp)
                 .error(R.drawable.baseline_movie_white_48dp)
-=======
-                .load("https://image.tmdb.org/t/p/w300/"+item.getImageUrl())
-                .fallback(R.drawable.ic_placeholder_err)
-                .error(R.drawable.ic_placeholder_err)
->>>>>>> userprofile
                 .transition(GenericTransitionOptions.with(R.transition.zoomin))
                 .centerCrop()
                 .listener(new RequestListener<Drawable>() {

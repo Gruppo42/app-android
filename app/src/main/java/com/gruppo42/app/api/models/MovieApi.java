@@ -22,7 +22,6 @@ public interface MovieApi {
                                        @Query("query") String query,
                                        @Query("region") String region,
                                        @Query("primary_release_year") String year);
-<<<<<<< HEAD
     @GET("trending/{media_type}/{time_window}")
     Call<QueryResultDTO> getTrendingMovies(@Path("media_type") String media_type,
                                            @Path("time_window") String time_window,
@@ -32,12 +31,10 @@ public interface MovieApi {
                                                 @Query("primary_release_date.gte") String primary_release_date_gte,
                                                 @Query("with_genres") String with_genres,
                                                 @Query("api_key") String api_key);
-=======
     @GET("3/movie/{movie_id}")
     Call<MovieDetailsDTO> getDeatils(@Path("movie_id") String movieid,
                                      @Query("api_key") String api_key);
 
->>>>>>> userprofile
 
     class Instance {
 

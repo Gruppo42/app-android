@@ -51,14 +51,13 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         this.container = container;
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        token = sharedPref.getString("user", "");
+        token = sharedPref.getString("user", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTkyNjgwOTM3LCJleHAiOjE1OTMyODU3Mzd9.CaaPDEMMwCaszk8PhMdHZoSl1fK7apQ-zGk0ua5gJrnA_705TiJ0mqdUs7aFGIbNAMRWO0zqi4Sgb6jSHZcCNw");
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         this.nameSurname = root.findViewById(R.id.textViewNameSurname);
         this.username = root.findViewById(R.id.textViewUsername);
         this.watchlistCount = root.findViewById(R.id.textViewWatchlistCount);
         this.favlistCount = root.findViewById(R.id.textViewFavoritesCount);
         this.imageView = root.findViewById(R.id.imageViewProfilePic);
-        final TextView textView = root.findViewById(R.id.text_home);
         ViewPager2 pager = root.findViewById(R.id.pager);
         this.favList = new ArrayList<>();
         this.watchList = new ArrayList<>();

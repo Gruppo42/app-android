@@ -79,7 +79,8 @@ public class MoviesByDateOrGenreFragment extends Fragment {
             }
         });
         binding.moviesRecyclerView.setAdapter(homeRecyclerViewAdapter);
-
+        //recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 10); DA CHIAMARE PER OGNI RECYCLER VIEW (per ottimizzare)
+        binding.moviesRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 20);
         binding.moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @SuppressLint("LongLogTag")

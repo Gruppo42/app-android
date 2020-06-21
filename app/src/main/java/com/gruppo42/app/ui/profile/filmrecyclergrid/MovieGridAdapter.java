@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.MovieApi;
 import com.gruppo42.app.api.models.MovieDetailsDTO;
+import com.gruppo42.app.utils.Constants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +60,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
         if (url!=null)
             load_image(url, holder.getImageView());
         else
-            api.getDeatils(movieIDs.get(position), context.getResources().getString(R.string.apitoken)).enqueue(new Callback<MovieDetailsDTO>() {
+            api.getDeatils(movieIDs.get(position), Constants.MOVIES_API_KEY).enqueue(new Callback<MovieDetailsDTO>() {
                 @Override
                 public void onResponse(Call<MovieDetailsDTO> call, Response<MovieDetailsDTO> response) {
                     Log.d("Response: ", response.toString());

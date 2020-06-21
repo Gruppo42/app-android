@@ -48,13 +48,15 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 UserDTO user = response.body();
-                name.setValue(user.getName());
-                profileImage.setValue(user.getImage());
-                surname.setValue(user.getSurname());
-                username.setValue(user.getUsername());
-                email.setValue(user.getEmail());
-                favorites.setValue(user.getFavorites().stream().map(v -> v.toString()).collect(Collectors.toList()));
-                watchlist.setValue(user.getWatchlist().stream().map(v -> v.toString()).collect(Collectors.toList()));
+                if(response.isSuccessful()) {
+                    name.setValue(user.getName());
+                    profileImage.setValue(user.getImage());
+                    surname.setValue(user.getSurname());
+                    username.setValue(user.getUsername());
+                    email.setValue(user.getEmail());
+                    favorites.setValue(user.getFavorites().stream().map(v -> v.toString()).collect(Collectors.toList()));
+                    watchlist.setValue(user.getWatchlist().stream().map(v -> v.toString()).collect(Collectors.toList()));
+                }
             }
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {

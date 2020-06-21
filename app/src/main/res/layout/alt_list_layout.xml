@@ -28,7 +28,6 @@
             android:layout_height="141dp"
             app:srcCompat="@drawable/ic_placeholder"
             tools:ignore="VectorDrawableCompat" />
-            <!--android:background="@drawable/round_outline"-->
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -39,8 +38,6 @@
             android:visibility="gone"
             app:srcCompat="@drawable/ic_placeholder"
             tools:ignore="VectorDrawableCompat" />
-            <!--android:background="@drawable/round_outline"-->
-
 
         <LinearLayout
             android:layout_width="match_parent"

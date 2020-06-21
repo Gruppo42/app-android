@@ -51,8 +51,8 @@ public class HomeSliderPagerAdapter extends PagerAdapter {
             Glide
                     .with(slideLayout)
                     .load(imageUrl)
-                    .fallback(R.drawable.baseline_movie_white_48dp)
-                    .error(R.drawable.baseline_movie_white_48dp)
+                    .fallback(R.drawable.backdrop_not_found)
+                    .error(R.drawable.backdrop_not_found)
                     .into(slideImg);
         }
 

@@ -22,7 +22,6 @@ public class ProfileViewModel extends ViewModel {
 
     private MutableLiveData<String> name;
     private MutableLiveData<String> profileImage;
-    private MutableLiveData<String> surname;
     private MutableLiveData<String> username;
     private MutableLiveData<String> email;
     private MutableLiveData<List<String>> favorites;
@@ -37,7 +36,6 @@ public class ProfileViewModel extends ViewModel {
         super();
         name = new MutableLiveData<>();
         profileImage = new MutableLiveData<>();
-        surname = new MutableLiveData<>();
         username = new MutableLiveData<>();
         email = new MutableLiveData<>();
         favorites = new MutableLiveData<>();
@@ -50,7 +48,6 @@ public class ProfileViewModel extends ViewModel {
                 UserDTO user = response.body();
                 name.setValue(user.getName());
                 profileImage.setValue(user.getImage());
-                surname.setValue(user.getSurname());
                 username.setValue(user.getUsername());
                 email.setValue(user.getEmail());
                 favorites.setValue(user.getFavorites().stream().map(v -> v.toString()).collect(Collectors.toList()));
@@ -78,14 +75,6 @@ public class ProfileViewModel extends ViewModel {
 
     public void setProfileImage(MutableLiveData<String> profileImage) {
         this.profileImage = profileImage;
-    }
-
-    public MutableLiveData<String> getSurname() {
-        return surname;
-    }
-
-    public void setSurname(MutableLiveData<String> surname) {
-        this.surname = surname;
     }
 
     public MutableLiveData<String> getUsername() {

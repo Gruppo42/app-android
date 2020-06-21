@@ -9,7 +9,6 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +25,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.gruppo42.app.R;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
-    private boolean nameGot = false;
-    private boolean surnnameGot = false;
     private PagerAdapter adapter;
     private TextView nameSurname;
     private TextView username;
@@ -104,24 +100,7 @@ public class ProfileFragment extends Fragment {
         profileViewModel.getEmail().observeForever(s -> {
         });
         profileViewModel.getName().observeForever(s -> {
-            if(surnnameGot) {
-                this.nameSurname.setText(s + " " + profileViewModel.getSurname().getValue());
-                this.surnnameGot = false;
-            }
-            else {
-                this.nameSurname.setText(s);
-                this.nameGot = true;
-            }
-        });
-        profileViewModel.getSurname().observeForever(s -> {
-            if(nameGot) {
-                this.nameSurname.setText(profileViewModel.getName().getValue() + " " + s);
-                this.nameGot = false;
-            }
-            else {
-                this.nameSurname.setText(s);
-                this.surnnameGot = true;
-            }
+            this.nameSurname.setText(s + " " + profileViewModel.getName().getValue());
         });
         profileViewModel.getUsername().observeForever(s -> {
             this.username.setText("@"+s);

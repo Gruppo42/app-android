@@ -13,8 +13,6 @@ public class UserDTO {
     private String username;
     @SerializedName("name")
     private String name;
-    @SerializedName("surname")
-    private String surname;
     @SerializedName("email")
     private String email;
     @SerializedName("image")
@@ -28,10 +26,9 @@ public class UserDTO {
     {
     }
 
-    public UserDTO(String username, String name, String surname, String email, String image, List<MovieDTO> favorites, List<MovieDTO> watchlist) {
+    public UserDTO(String username, String name, String email, String image, List<MovieDTO> favorites, List<MovieDTO> watchlist) {
         this.username = username;
         this.name = name;
-        this.surname = surname;
         this.email = email;
         this.image = image;
         this.favorites = favorites;
@@ -52,14 +49,6 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public String getEmail() {

@@ -8,7 +8,12 @@
     <string name="genre_select">Select genre</string>
     <string name="region_select">Select region</string>
     <string name="language_select">Select language</string>
-    <string name="apitoken">aca1b28e5260b80b1d7852807831fa93</string>
+    <string name="name">Name</string>
+    <string name="name_edit">Edit name</string>
+    <string name="username_edit">Edit username</string>
+    <string name="email_edit">Edit email</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="emptysearchresults">Nothing found</string>
     <string name="nomoviesfound">No movies</string>
     <string name="cancel">Cancel</string>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -40,16 +41,16 @@ public class HomeSliderPagerAdapter extends PagerAdapter {
 
         View slideLayout = this.layoutInflater.inflate(R.layout.slide_item, null);
 
+        TextView slideTitle = slideLayout.findViewById(R.id.slideMovieTitle);
+        slideTitle.setText(resultDTOList.get(position).getTitle());
         ImageView slideImg = slideLayout.findViewById(R.id.slideImage);
 
-        String imageUrl = Constants.MOVIES_SLIDER_IMAGE_BASE_URL + resultDTOList.get(position).getPoster_path();
-        String imageNewUrl = null;
+        String imageUrl = Constants.MOVIES_SLIDER_IMAGE_BASE_URL + resultDTOList.get(position).getBackdrop_path();
 
         if (imageUrl != null) {
-            imageNewUrl = imageUrl.replace("http://", "https://").trim();
             Glide
                     .with(slideLayout)
-                    .load(imageNewUrl)
+                    .load(imageUrl)
                     .fallback(R.drawable.baseline_movie_white_48dp)
                     .error(R.drawable.baseline_movie_white_48dp)
                     .into(slideImg);

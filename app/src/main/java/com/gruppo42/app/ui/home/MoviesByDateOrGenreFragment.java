@@ -143,8 +143,9 @@ public class MoviesByDateOrGenreFragment extends Fragment {
                     Log.d(TAG, "Success - Total results: " + moviesByDateOrGenreResource.getTotalResults() + " Status code: " + moviesByDateOrGenreResource.getStatusCode() + "Status message: " + moviesByDateOrGenreResource.getStatusMessage());
 
                     for (int i = 0; i < moviesByDateOrGenreResource.getData().size(); i++) {
-                        if (moviesByDateOrGenreResource.getData().get(i) != null) {
-                            Log.d(TAG, "Action ResultDTO: " + moviesByDateOrGenreResource.getData().get(i).getTitle());
+                        if (moviesByDateOrGenreResource.getData().get(i) != null && moviesByDateOrGenreResource.getData().get(i).getPoster_path() == null) {
+                            Log.d(TAG, "Action ResultDTO: " + moviesByDateOrGenreResource.getData().get(i).getPoster_path());
+                            moviesByDateOrGenreResource.getData().remove(i);
                         }
                     }
                 } else {

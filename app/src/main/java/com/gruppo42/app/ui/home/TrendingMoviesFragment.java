@@ -83,8 +83,13 @@ public class TrendingMoviesFragment extends Fragment {
                 if (trendingMoviesResource.getData() != null) {
                     Log.d(TAG, "Success - Total results: " + trendingMoviesResource.getTotalResults() + " Status code: " + trendingMoviesResource.getStatusCode() + " Status message: " + trendingMoviesResource.getStatusMessage());
 
-                    for (int i = 0; i < Constants.SLIDER_LIMIT; i++) {
+                    for (int i = 0; i < trendingMoviesResource.getData().size(); i++) {
+                        if (trendingMoviesResource.getData().get(i) != null && trendingMoviesResource.getData().get(i).getBackdrop_path() == null) {
+                            trendingMoviesResource.getData().remove(i);
+                        }
+                    }
 
+                    for (int i = 0; i < Constants.SLIDER_LIMIT; i++) {
                         if (trendingMoviesResource.getData().get(i) != null) {
                             resultDTOList.add(trendingMoviesResource.getData().get(i));
                             Log.d(TAG, i + " = " + resultDTOList.get(i).getPoster_path());

@@ -2,6 +2,7 @@ package com.gruppo42.app.ui.home;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,13 +103,11 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         void bind(ResultDTO resultDTO, OnItemClickListener onItemClickListener) {
 
             String imageUrl = Constants.MOVIES_LIST_IMAGE_BASE_URL + resultDTO.getPoster_path();
-            String imageNewUrl = null;
 
             if (imageUrl != null) {
-                imageNewUrl = imageUrl.replace("http://", "https://").trim();
                 Glide
                         .with(itemView.getContext())
-                        .load(imageNewUrl)
+                        .load(imageUrl)
                         .fallback(R.drawable.baseline_movie_white_48dp)
                         .error(R.drawable.baseline_movie_white_48dp)
                         .into(imageViewMovieImage);

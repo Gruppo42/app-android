@@ -17,6 +17,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.ResultDTO;
@@ -103,6 +106,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         void bind(ResultDTO resultDTO, OnItemClickListener onItemClickListener) {
 
             String imageUrl = Constants.MOVIES_LIST_IMAGE_BASE_URL + resultDTO.getPoster_path();
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(10));
 
             if (imageUrl != null) {
                 Glide
@@ -110,6 +115,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                         .load(imageUrl)
                         .fallback(R.drawable.baseline_movie_white_48dp)
                         .error(R.drawable.baseline_movie_white_48dp)
+                        .apply(requestOptions)
                         .into(imageViewMovieImage);
             }
 

@@ -5,10 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/imageViewMoviePicture"
-    android:scaleType="fitCenter"
-    android:adjustViewBounds="true"
     android:layout_width="94dp"
     android:layout_height="141dp"
-    android:background="@drawable/round_outline"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp" />

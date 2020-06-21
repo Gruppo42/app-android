@@ -19,7 +19,10 @@ import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.MovieApi;
@@ -115,6 +118,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull FilmViewHolder holder, int position) {
         MovieItem item = filmItemList.get(position);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(10));
         Glide
                 .with(this.context)
                 .load("https://image.tmdb.org/t/p/w300/"+item.getImageUrl())
@@ -138,6 +143,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         return false;
                     }
                 })
+                .apply(requestOptions)
                 .into(holder.imageView);
         holder.title.setText(item.getTitle());
         holder.year.setText(item.getYear());

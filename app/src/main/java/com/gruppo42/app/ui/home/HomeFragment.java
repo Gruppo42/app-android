@@ -18,6 +18,7 @@ import com.gruppo42.app.utils.Constants;
 
 public class HomeFragment extends Fragment {
 
+<<<<<<< HEAD
     private static final String TAG = "HomeFragment";
 
     FragmentTransaction fragmentTransaction;
@@ -65,5 +66,23 @@ public class HomeFragment extends Fragment {
         fragmentTransaction.replace(R.id.frameLayoutWar, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.WAR));
         fragmentTransaction.replace(R.id.frameLayoutWestern, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.WESTERN));
         fragmentTransaction.commit();
+=======
+    private HomeViewModel homeViewModel;
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        homeViewModel =
+                ViewModelProviders.of(this).get(HomeViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        final TextView textView = root.findViewById(R.id.text_home);
+
+        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textView.setText(s);
+            }
+        });
+        return root;
+>>>>>>> userprofile
     }
 }

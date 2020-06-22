@@ -1,16 +1,14 @@
 package com.gruppo42.app.ui.profile;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.gruppo42.app.api.models.UserApi;
 import com.gruppo42.app.api.models.UserDTO;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,14 +42,13 @@ public class ProfileViewModel extends ViewModel {
         watchlist = new MutableLiveData<>();
         this.api = UserApi.Instance.get();
         //Prendi dati da api dando il token
-        api.getUserDetails("Bearer "+ token).enqueue(new Callback<UserDTO>() {
+        api.getUserDetails(token).enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 UserDTO user = response.body();
                 if(response.isSuccessful()) {
                     name.setValue(user.getName());
                     profileImage.setValue(user.getImage());
-                    surname.setValue(user.getSurname());
                     username.setValue(user.getUsername());
                     email.setValue(user.getEmail());
                     favorites.setValue(user.getFavorites().stream().map(v -> v.toString()).collect(Collectors.toList()));
@@ -63,7 +60,6 @@ public class ProfileViewModel extends ViewModel {
                 Log.d("Failure", t.toString());
             }
         });
-
     }
 
     public MutableLiveData<String> getName() {

@@ -4,14 +4,28 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 
 public interface UserApi {
     String ENDPOINT = "https://gruppo42.azurewebsites.net/api/";
 
     @GET("user/me")
     Call<UserDTO> getUserDetails(@Header("AUTHORIZATION") String bearerToken);
+
+    @DELETE("auth/user/me/delete")
+    Call<UserApiResponse> deleteUser(@Header("AUTHORIZATION") String bearerToken,
+                                     @Body LoginRequest loginRequest);
+    @POST("user/me")
+    Call<UserApiResponse> changeProfileDetails(@Header("AUTHORIZATION") String bearerToken,
+                                               @Body ProfileChangeRequest request);
+
+    @POST("auth/newPassword")
+    Call<UserApiResponse> changePassword(@Header("AUTHORIZATION") String bearerToken,
+                                         @Body PasswordChangeRequest request);
 
     class Instance {
 

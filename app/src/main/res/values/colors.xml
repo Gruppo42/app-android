@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#151C25</color>
     <color name="colorAccent">#F1B814</color>
     <color name="colorBottomNavigationView">#3B434D</color>
+    <color name="deleteAcc">#D64747</color>
+    <color name="logout">#F09348</color>
 </resources>

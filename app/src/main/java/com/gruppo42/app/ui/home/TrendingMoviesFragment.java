@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.Resource;
 import com.gruppo42.app.api.models.ResultDTO;
@@ -61,8 +62,8 @@ public class TrendingMoviesFragment extends Fragment {
 
         homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(getActivity(), getTrendingMovieList(Constants.TRENDING_MOVIES_MEDIA_TYPE, Constants.TRENDING_MOVIES_TIME_WINDOW), new HomeRecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ResultDTO resultDTO) {
-                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(resultDTO);
+            public void onItemClick(MovieItem movieItem) {
+                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movieItem);
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -99,8 +100,8 @@ public class TrendingMoviesFragment extends Fragment {
 
                     sliderAdapter = new HomeSliderPagerAdapter(getActivity(), resultDTOList, new HomeSliderPagerAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(ResultDTO movie) {
-                            HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movie);
+                        public void onItemClick(MovieItem movieItem) {
+                            HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movieItem);
                             Navigation.findNavController(view).navigate(action);
                         }
                     });

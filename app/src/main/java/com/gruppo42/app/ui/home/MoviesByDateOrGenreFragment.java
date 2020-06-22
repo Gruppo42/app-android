@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.Resource;
 import com.gruppo42.app.api.models.ResultDTO;
@@ -73,8 +74,8 @@ public class MoviesByDateOrGenreFragment extends Fragment {
 
         homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(getActivity(), getMovieByDateOrGenreList(with_genres), new HomeRecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ResultDTO resultDTO) {
-                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(resultDTO);
+            public void onItemClick(MovieItem movieItem) {
+                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movieItem);
                 Navigation.findNavController(view).navigate(action);
             }
         });

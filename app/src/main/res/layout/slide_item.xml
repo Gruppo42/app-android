@@ -19,7 +19,7 @@
         android:src="@drawable/ic_launcher_background" />
 
     <ImageView
-        android:id="@+id/gradientBgImageDown"
+        android:id="@+id/gradientBgImageDownLeft"
         android:layout_width="0dp"
         android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="@+id/slideImage"
@@ -38,10 +38,10 @@
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/gradientBgImageDown"
-        app:layout_constraintEnd_toEndOf="@+id/gradientBgImageDown"
+        app:layout_constraintBottom_toBottomOf="@+id/gradientBgImageDownLeft"
+        app:layout_constraintEnd_toEndOf="@+id/gradientBgImageDownLeft"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/gradientBgImageDown"
-        app:layout_constraintTop_toTopOf="@+id/gradientBgImageDown" />
+        app:layout_constraintStart_toStartOf="@+id/gradientBgImageDownLeft"
+        app:layout_constraintTop_toTopOf="@+id/gradientBgImageDownLeft" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

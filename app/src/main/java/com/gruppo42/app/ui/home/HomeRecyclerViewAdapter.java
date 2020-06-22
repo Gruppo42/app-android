@@ -21,6 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.ResultDTO;
 import com.gruppo42.app.utils.Constants;
@@ -33,7 +34,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int LOADING_VIEW_TYPE = 1;
 
     public interface OnItemClickListener {
-        void onItemClick(ResultDTO resultDTO);
+        void onItemClick(MovieItem movieItem);
     }
 
     private List<ResultDTO> resultDTOList;
@@ -121,7 +122,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { onItemClickListener.onItemClick(resultDTO); }
+                public void onClick(View v) {
+                    MovieItem movieItem = new MovieItem(resultDTO);
+                    onItemClickListener.onItemClick(movieItem);
+                }
             });
         }
     }

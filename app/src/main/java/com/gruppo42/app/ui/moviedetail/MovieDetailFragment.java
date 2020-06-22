@@ -19,6 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.ResultDTO;
 import com.gruppo42.app.databinding.FragmentMovieDetailBinding;
@@ -60,10 +61,10 @@ public class MovieDetailFragment extends Fragment {
         Bundle bundle = getArguments();
 
         if (bundle != null) {
-            ResultDTO resultDTO = MovieDetailFragmentArgs.fromBundle(bundle).getResultDTO();
+            MovieItem movieItem = MovieDetailFragmentArgs.fromBundle(bundle).getMovieItem();
 
             ImageView backdropImg = view.findViewById(R.id.detail_movie_backdrop);
-            String backdropURL = Constants.MOVIES_SLIDER_IMAGE_BASE_URL + resultDTO.getBackdrop_path();
+            String backdropURL = Constants.MOVIES_SLIDER_IMAGE_BASE_URL + movieItem.getImageUrlSecondary();
             if (backdropURL != null) {
                 Glide
                         .with(view)
@@ -76,7 +77,7 @@ public class MovieDetailFragment extends Fragment {
             TextView countdown = view.findViewById(R.id.countdown);
             Calendar calendar = Calendar.getInstance();
             Date today = calendar.getTime();
-            String movieDateString = resultDTO.getRelease_date();
+            String movieDateString = movieItem.getDate();
             Date movieDate = null;
             try {
                 movieDate = new SimpleDateFormat("yyyy-MM-dd").parse(movieDateString);
@@ -87,6 +88,8 @@ public class MovieDetailFragment extends Fragment {
             difference = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
             if (difference > 0) {
                 difference++;
+                ImageView gradientBgImageDownRight = view.findViewById(R.id.gradientBgImageDownRight);
+                gradientBgImageDownRight.setVisibility(View.VISIBLE);
                 countdown.setText(difference + " days left");
             }
 
@@ -97,7 +100,7 @@ public class MovieDetailFragment extends Fragment {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(10));
             ImageView posterImg = view.findViewById(R.id.detail_movie_poster);
-            String posterURL = Constants.MOVIES_LIST_IMAGE_BASE_URL + resultDTO.getPoster_path();
+            String posterURL = Constants.MOVIES_LIST_IMAGE_BASE_URL + movieItem.getImageUrl();
             if (posterURL != null) {
                 Glide
                         .with(view)
@@ -108,24 +111,13 @@ public class MovieDetailFragment extends Fragment {
                         .into(posterImg);
             }
 
-            binding.detailMovieTitle.setText(resultDTO.getTitle());
+            binding.detailMovieTitle.setText(movieItem.getTitle());
 
-            binding.detailMovieYear.setText(resultDTO.getRelease_date().substring(0, 4));
+            binding.detailMovieYear.setText(movieItem.getYear());
 
-            String genres = "";
-            HashMapGenres hashMapGenres = new HashMapGenres();
-            for (int i = 0; i < resultDTO.getGenre_ids().length; i++) {
-                genres += hashMapGenres.getIdGenresToGenres().get(resultDTO.getGenre_ids()[i]);
-                genres += ", ";
-            }
-            if (genres.length() != 0) {
-                genres = genres.substring(0, genres.length() - 2);
-            } else {
-                genres = "No genres available";
-            }
-            binding.detailMovieGenres.setText(genres);
+            binding.detailMovieGenres.setText(movieItem.getStrGenres());
 
-            binding.detailMovieDescription.setText(resultDTO.getOverview());
+            binding.detailMovieDescription.setText(movieItem.getDescription());
         }
     }
 }

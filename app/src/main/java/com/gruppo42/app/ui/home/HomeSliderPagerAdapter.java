@@ -12,6 +12,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.ResultDTO;
 import com.gruppo42.app.utils.Constants;
@@ -23,7 +24,7 @@ public class HomeSliderPagerAdapter extends PagerAdapter {
     private static final String TAG = "HomeSliderPagerAdapter";
 
     public interface OnItemClickListener {
-        void onItemClick(ResultDTO resultDTO);
+        void onItemClick(MovieItem movieItem);
     }
 
     private List<ResultDTO> resultDTOList;
@@ -59,7 +60,8 @@ public class HomeSliderPagerAdapter extends PagerAdapter {
         slideLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(resultDTOList.get(position));
+                MovieItem movieItem = new MovieItem(resultDTOList.get(position));
+                onItemClickListener.onItemClick(movieItem);
             }
         });
 

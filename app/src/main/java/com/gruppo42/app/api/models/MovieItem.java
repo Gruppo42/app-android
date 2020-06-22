@@ -184,16 +184,16 @@ public class MovieItem implements Parcelable
         dest.writeString(description);
     }
 
-    public static final Parcelable.Creator<ResultDTO> CREATOR = new Parcelable.Creator<ResultDTO>() {
+    public static final Parcelable.Creator<MovieItem> CREATOR = new Parcelable.Creator<MovieItem>() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
-        public ResultDTO createFromParcel(Parcel in) {
-            return new ResultDTO(in);
+        public MovieItem createFromParcel(Parcel in) {
+            return new MovieItem(in);
         }
 
         @Override
-        public ResultDTO[] newArray(int size) {
-            return new ResultDTO[size];
+        public MovieItem[] newArray(int size) {
+            return new MovieItem[size];
         }
     };
 }

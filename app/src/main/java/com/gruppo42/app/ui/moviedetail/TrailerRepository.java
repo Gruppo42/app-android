@@ -42,13 +42,12 @@ public class TrailerRepository {
 
     public void getVideos(MutableLiveData<Resource<List<TrailerResultDTO>>> videosResource, int movie_id) {
         Call<TrailerQueryResultDTO> call = moviesService.getVideos(movie_id, Constants.MOVIES_API_KEY);
-        Log.d(TAG, "getVideos: aaaaaa");
+
         call.enqueue(new Callback<TrailerQueryResultDTO>() {
             @Override
             public void onResponse(@NotNull Call<TrailerQueryResultDTO> call, @NotNull Response<TrailerQueryResultDTO> response) {
-                Log.d(TAG, "onResponse: eeeeee");
+                Log.d(TAG, "onResponse: ");
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d(TAG, "ciaociao");
                     Resource<List<TrailerResultDTO>> resource = new Resource<>();
                     resource.setData(response.body().getResults());
                     resource.setTotalResults(response.body().getTotal_results());
@@ -56,7 +55,6 @@ public class TrailerRepository {
                     resource.setStatusMessage(response.message());
                     videosResource.postValue(resource);
                 } else if (response.errorBody() != null) {
-                    Log.d(TAG, "hjdfshjkfjkfsdhjkfdsk");
                     Resource<List<TrailerResultDTO>> resource = new Resource<>();
                     resource.setStatusCode(response.code());
                     try {

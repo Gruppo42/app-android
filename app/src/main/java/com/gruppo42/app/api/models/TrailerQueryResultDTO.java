@@ -6,6 +6,8 @@ public class TrailerQueryResultDTO {
     private int id;
     private List<TrailerResultDTO> results;
 
+    public TrailerQueryResultDTO() {}
+
     public TrailerQueryResultDTO(int id, List<TrailerResultDTO> results) {
         this.id = id;
         this.results = results;

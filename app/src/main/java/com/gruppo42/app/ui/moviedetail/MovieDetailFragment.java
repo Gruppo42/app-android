@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
@@ -37,10 +39,10 @@ import org.jetbrains.annotations.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Observer;
 import java.util.concurrent.TimeUnit;
 
 public class MovieDetailFragment extends Fragment {
@@ -49,11 +51,11 @@ public class MovieDetailFragment extends Fragment {
 
     private TrailerViewModel trailerViewModel;
 
+    private List<TrailerResultDTO> trailerResultDTOList;
+
     private FragmentMovieDetailBinding binding;
 
-    public MovieDetailFragment() {
-
-    }
+    public MovieDetailFragment() {}
 
     public static MovieDetailFragment newInstance() { return new MovieDetailFragment(); }
 
@@ -135,18 +137,65 @@ public class MovieDetailFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     trailerViewModel = new TrailerViewModel();
-                    Log.d(TAG, "prova: " + movieItem.getId());
-                    LiveData<Resource<List<TrailerResultDTO>>> liveData = trailerViewModel.getVideosResource(movieItem.getId());
+                    trailerResultDTOList = new ArrayList<>();
+                    Log.d(TAG, "Movie ID: " + movieItem.getId());
 
-                    Log.d(TAG, "cacca: " + liveData);
-                    Log.d(TAG, "cacca 2: " + liveData.getValue());
-                    Log.d(TAG, "cacca 3: " + liveData.getValue().getData());
+                    final Observer<Resource<List<TrailerResultDTO>>> observer = new Observer<Resource<List<TrailerResultDTO>>>() {
+                        @Override
+                        public void onChanged(Resource<List<TrailerResultDTO>> videosResource) {
+                            if (videosResource.getData() != null) {
+                                for (int i = 0; i < videosResource.getData().size(); i++) {
+                                    if (videosResource.getData().get(i) != null) {
+                                        trailerResultDTOList.add(videosResource.getData().get(i));
+                                    }
+                                }
+
+                                Log.d(TAG, "Quantità trailer: " + trailerResultDTOList.size());
+                                for (int i = 0; i < trailerResultDTOList.size(); i++) {
+                                    Log.d(TAG, i + " " + trailerResultDTOList.get(i).getKey());
+                                }
+
+                                // There isn't any video for the movie
+                                if (trailerResultDTOList.size() == 0) {
+                                    Toast toast = Toast.makeText(getContext(), "No available trailer", Toast.LENGTH_SHORT);
+                                    toast.setGravity(0, 0, 1000);
+                                    toast.show();
+                                }
+                                // There are videos for the movie
+                                else {
+                                    String trailerUrl=""; // It will contain the key without the prefix of the URL
+
+                                    for (int i = 0; i < trailerResultDTOList.size(); i++) {
+                                        if ((trailerResultDTOList.get(i).getSite().equals("YouTube")) &&
+                                                (trailerResultDTOList.get(i).getType().equals("Trailer"))) {
+                                            trailerUrl = trailerResultDTOList.get(i).getKey();
+                                            break;
+                                        }
+                                    }
+
+                                    // The movie has no trailer on Youtube
+                                    if (trailerUrl == "") {
+                                        Toast toast = Toast.makeText(getContext(), "No available trailer", Toast.LENGTH_SHORT);
+                                        toast.setGravity(0, 0, 1000);
+                                        toast.show();
+                                    }
+                                    // From here I'm sure there is a trailer on Youtube
+                                    // So i can play the video
+                                    else {
+                                        Log.d(TAG, "trailerUrl: " + trailerUrl);
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    LiveData<Resource<List<TrailerResultDTO>>> liveData = trailerViewModel.getVideosResource(movieItem.getId());
+                    liveData.observe(getViewLifecycleOwner(), observer);
                 }
             });
         }
     }
 
-    private List<TrailerResultDTO> getVideoList(int movie_id) {
+    /*private List<TrailerResultDTO> getVideoList(int movie_id) {
         Resource<List<TrailerResultDTO>> videoListResource = trailerViewModel.getVideosResource(movie_id).getValue();
 
         if (videoListResource != null) {
@@ -154,5 +203,5 @@ public class MovieDetailFragment extends Fragment {
         }
 
         return null;
-    }
+    }*/
 }

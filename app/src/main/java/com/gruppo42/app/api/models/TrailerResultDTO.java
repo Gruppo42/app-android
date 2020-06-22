@@ -28,6 +28,8 @@ public class TrailerResultDTO implements Parcelable {
         this.type = type;
     }
 
+    public TrailerResultDTO() {}
+
     public String getId() {
         return id;
     }
@@ -118,16 +120,16 @@ public class TrailerResultDTO implements Parcelable {
         dest.writeString(type);
     }
 
-    public static final Parcelable.Creator<ResultDTO> CREATOR = new Parcelable.Creator<ResultDTO>() {
+    public static final Parcelable.Creator<TrailerResultDTO> CREATOR = new Parcelable.Creator<TrailerResultDTO>() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
-        public ResultDTO createFromParcel(Parcel in) {
-            return new ResultDTO(in);
+        public TrailerResultDTO createFromParcel(Parcel in) {
+            return new TrailerResultDTO(in);
         }
 
         @Override
-        public ResultDTO[] newArray(int size) {
-            return new ResultDTO[size];
+        public TrailerResultDTO[] newArray(int size) {
+            return new TrailerResultDTO[size];
         }
     };
 }

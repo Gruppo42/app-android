@@ -45,7 +45,7 @@ public class TrendingMoviesFragment extends Fragment {
 
     private FragmentHomeMovieSliderBinding binding;
 
-    public TrendingMoviesFragment() { }
+    public TrendingMoviesFragment() {}
 
     public static TrendingMoviesFragment newInstance() { return new TrendingMoviesFragment(); }
 

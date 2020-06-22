@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -116,6 +117,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                         .load(imageUrl)
                         .fallback(R.drawable.baseline_movie_white_48dp)
                         .error(R.drawable.baseline_movie_white_48dp)
+                        .transition(GenericTransitionOptions.with(R.transition.zoomin))
                         .apply(requestOptions)
                         .into(imageViewMovieImage);
             }

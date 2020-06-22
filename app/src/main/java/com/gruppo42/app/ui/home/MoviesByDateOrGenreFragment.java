@@ -1,27 +1,37 @@
 package com.gruppo42.app.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
+import androidx.navigation.Navigator;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.Resource;
 import com.gruppo42.app.api.models.ResultDTO;
 import com.gruppo42.app.databinding.FragmentHomeMovieListBinding;
+import com.gruppo42.app.ui.moviedetail.MovieDetailFragment;
 
 import org.jetbrains.annotations.NotNull;
 

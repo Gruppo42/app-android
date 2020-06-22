@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.MovieItem;

@@ -6,18 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
-    </style>
-
-    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="ChipTextStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
-
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -49,6 +38,16 @@
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/dialog_sheet_back</item>
     </style>
 
 </resources>

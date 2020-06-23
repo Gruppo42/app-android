@@ -22,6 +22,7 @@ import com.gruppo42.app.databinding.ActivitySignupBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 // Max Username 20, Name 42
 public class Signup extends AppCompatActivity {
 
@@ -51,27 +52,23 @@ public class Signup extends AppCompatActivity {
         binding.emailText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
+                if (!hasFocus) {
                     Log.d("DEbug", "IN HERE");
-                    if(binding.emailText.getText()!=null &&
-                            binding.emailText.getText().length()>0 &&
+                    if (binding.emailText.getText() != null &&
+                            binding.emailText.getText().length() > 0 &&
                             android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailText.getText()).matches())
                         api.checkEmailAvailable(binding.emailText.getText().toString())
                                 .enqueue(new Callback<AvailableResponse>() {
                                     @Override
                                     public void onResponse(Call<AvailableResponse> call, Response<AvailableResponse> response) {
                                         Log.d("DEbug", response.toString());
-                                        if(response.isSuccessful())
-                                        {
-                                            if(response.body().isAvailable())
-                                            {
+                                        if (response.isSuccessful()) {
+                                            if (response.body().isAvailable()) {
                                                 binding.email.setErrorEnabled(false);
                                                 binding.email.setHelperTextEnabled(true);
                                                 binding.email.setHelperText("Email not in use");
                                                 emailAvailable = true;
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 binding.email.setHelperTextEnabled(false);
                                                 binding.email.setErrorEnabled(true);
                                                 binding.email.setError("Email already in use!");
@@ -79,14 +76,14 @@ public class Signup extends AppCompatActivity {
                                             }
                                         }
                                     }
+
                                     @Override
                                     public void onFailure(Call<AvailableResponse> call, Throwable t) {
                                         emailAvailable = false;
                                     }
                                 });
-                    if(binding.emailText.getText()!=null && binding.emailText.getText().length()==0 ||
-                            !android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailText.getText()).matches())
-                    {
+                    if (binding.emailText.getText() != null && binding.emailText.getText().length() == 0 ||
+                            !android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailText.getText()).matches()) {
                         binding.email.setHelperTextEnabled(false);
                         binding.email.setErrorEnabled(true);
                         binding.email.setError("Please enter a valid email!");
@@ -99,7 +96,7 @@ public class Signup extends AppCompatActivity {
         binding.nameText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
+                if (hasFocus)
                     binding.name.setCounterEnabled(true);
                 else {
                     binding.name.setCounterEnabled(false);
@@ -111,42 +108,38 @@ public class Signup extends AppCompatActivity {
         binding.usernameText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
+                if (hasFocus)
                     binding.username.setCounterEnabled(true);
                 else {
                     //Controllo integrita'
-                    if(binding.usernameText.getText()!=null &&
-                            binding.usernameText.getText().length()>0 &&
-                            binding.usernameText.getText().length()<=20)
+                    if (binding.usernameText.getText() != null &&
+                            binding.usernameText.getText().length() > 0 &&
+                            binding.usernameText.getText().length() <= 20)
                         api.checkUsernameAvailable(binding.usernameText.getText().toString())
-                            .enqueue(new Callback<AvailableResponse>() {
-                                @Override
-                                public void onResponse(Call<AvailableResponse> call, Response<AvailableResponse> response) {
-                                    if(response.isSuccessful())
-                                    {
-                                        if(response.body().isAvailable())
-                                        {
-                                            binding.username.setErrorEnabled(false);
-                                            binding.username.setHelperTextEnabled(true);
-                                            binding.username.setHelperText("Username available");
-                                            usernameAvailable = true;
-                                        }
-                                        else
-                                        {
-                                            binding.username.setHelperTextEnabled(false);
-                                            binding.username.setErrorEnabled(true);
-                                            binding.username.setError("Username not available!");
-                                            usernameAvailable = false;
+                                .enqueue(new Callback<AvailableResponse>() {
+                                    @Override
+                                    public void onResponse(Call<AvailableResponse> call, Response<AvailableResponse> response) {
+                                        if (response.isSuccessful()) {
+                                            if (response.body().isAvailable()) {
+                                                binding.username.setErrorEnabled(false);
+                                                binding.username.setHelperTextEnabled(true);
+                                                binding.username.setHelperText("Username available");
+                                                usernameAvailable = true;
+                                            } else {
+                                                binding.username.setHelperTextEnabled(false);
+                                                binding.username.setErrorEnabled(true);
+                                                binding.username.setError("Username not available!");
+                                                usernameAvailable = false;
+                                            }
                                         }
                                     }
-                                }
-                                @Override
-                                public void onFailure(Call<AvailableResponse> call, Throwable t) {
-                                    usernameAvailable = false;
-                                }
-                            });
-                    if(binding.usernameText.getText()!=null && binding.usernameText.getText().length()==0)
-                    {
+
+                                    @Override
+                                    public void onFailure(Call<AvailableResponse> call, Throwable t) {
+                                        usernameAvailable = false;
+                                    }
+                                });
+                    if (binding.usernameText.getText() != null && binding.usernameText.getText().length() == 0) {
                         binding.username.setHelperTextEnabled(false);
                         binding.username.setErrorEnabled(true);
                         binding.username.setError("Please enter a valid username!");
@@ -165,41 +158,35 @@ public class Signup extends AppCompatActivity {
         setContentView(view);
     }
 
-    public void registerUser()
-    {
-        if(binding.nameText.getText().length()<3)
-        {
+    public void registerUser() {
+        if (binding.nameText.getText().length() < 3) {
             binding.name.setError("Name must have at least 3 characters!");
             binding.name.setHelperTextEnabled(false);
             binding.name.setErrorEnabled(true);
             return;
         }
-        if(!emailAvailable)
-        {
+        if (!emailAvailable) {
             binding.email.setError("Email taken!");
             binding.email.setHelperTextEnabled(false);
             binding.email.setErrorEnabled(true);
             return;
         }
-        if(!usernameAvailable)
-        {
+        if (!usernameAvailable) {
             binding.username.setError("Username taken!");
             binding.username.setHelperTextEnabled(false);
             binding.username.setErrorEnabled(true);
             return;
         }
-        if(!(binding.usernameText.getText()!=null &&
-                binding.usernameText.getText().length()>0 &&
-                binding.usernameText.getText().length()<=20))
-        {
+        if (!(binding.usernameText.getText() != null &&
+                binding.usernameText.getText().length() > 0 &&
+                binding.usernameText.getText().length() <= 20)) {
             binding.username.setError("Username must be between 1 and 20 characters!");
             binding.username.setHelperTextEnabled(false);
             binding.username.setErrorEnabled(true);
             return;
         }
-        if(binding.emailText.getText()==null ||
-                !android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailText.getText()).matches())
-        {
+        if (binding.emailText.getText() == null ||
+                !android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailText.getText()).matches()) {
             binding.email.setError("Insert a valid email!");
             binding.email.setHelperTextEnabled(false);
             binding.email.setErrorEnabled(true);
@@ -207,8 +194,7 @@ public class Signup extends AppCompatActivity {
         }
         binding.password.setHelperTextEnabled(false);
         binding.password.setErrorEnabled(false);
-        if(binding.passwordText.getText().length()<6)
-        {
+        if (binding.passwordText.getText().length() < 6) {
             binding.password.setError("Password must have at least 6 characters!");
             binding.password.setHelperTextEnabled(false);
             binding.password.setErrorEnabled(true);
@@ -216,22 +202,22 @@ public class Signup extends AppCompatActivity {
         }
         Log.d("Signup", "**********************Sending signup request!******************");
         api.signupUser(new SignUpRequest(binding.nameText.getText().toString(),
-                                         binding.usernameText.getText().toString(),
-                                         binding.emailText.getText().toString(),
-                                  "",
-                                         binding.passwordText.getText().toString()))
+                binding.usernameText.getText().toString(),
+                binding.emailText.getText().toString(),
+                "",
+                binding.passwordText.getText().toString()))
                 .enqueue(new Callback<UserApiResponse>() {
                     @Override
                     public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
                         Log.d("Signup", response.toString());
-                        if(response.isSuccessful())
-                        {
-                            if(response.body().isSuccess())
+                        if (response.isSuccessful()) {
+                            if (response.body().isSuccess())
                                 Log.d("Signup", "User created!");
                             else
                                 Log.d("Signup", "User creation failed!");
                         }
                     }
+
                     @Override
                     public void onFailure(Call<UserApiResponse> call, Throwable t) {
                         Log.d("Signup", "User creation failed!");

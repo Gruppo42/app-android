@@ -16,6 +16,7 @@ import com.gruppo42.app.api.models.PasswordChangeRequest;
 import com.gruppo42.app.api.models.UserApi;
 import com.gruppo42.app.api.models.UserApiResponse;
 import com.gruppo42.app.databinding.PasswordDialogBinding;
+import com.gruppo42.app.session.SessionManager;
 import com.gruppo42.app.ui.dialogs.ChangeListener;
 
 import retrofit2.Call;
@@ -24,10 +25,10 @@ import retrofit2.Response;
 
 public class NewPasswordDialog extends DialogFragment {
 
-    private String userToken;
     private UserApi api;
     private PasswordDialogBinding binding;
     private ChangeListener onSuccessListener = null;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,7 @@ public class NewPasswordDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        userToken = sharedPref.getString("user", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTkyNzk1ODg3LCJleHAiOjE1OTM0MDA2ODd9.HadRp2srca8WlO3VcVr1x5CLOT6i3USoYLO8HTZyjiHtenupH7BBkO7KV_7hznacTIDCQhWL6oHovvee5Nzkeg");
+        sessionManager = new SessionManager(getContext());
         api = UserApi.Instance.get();
         binding = PasswordDialogBinding.inflate(inflater, container, false);
         binding.confirm.setOnClickListener(new View.OnClickListener() {
@@ -57,8 +57,9 @@ public class NewPasswordDialog extends DialogFragment {
 
     public void sendRequest()
     {
-        api.changePassword(userToken, new PasswordChangeRequest(binding.passwordText.getText().toString(),
-                                                                binding.passwordText.getText().toString()))
+        api.changePassword(sessionManager.getUserAuthorization(),
+                        new PasswordChangeRequest(binding.passwordText.getText().toString(),
+                                                    binding.passwordText.getText().toString()))
                 .enqueue(new Callback<UserApiResponse>() {
                     @Override
                     public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {

@@ -3,14 +3,17 @@ package com.gruppo42.app.ui.profile.dialogs.editor;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.UserApi;
 import com.gruppo42.app.databinding.FragmentEditorBinding;
+import com.gruppo42.app.session.SessionManager;
 import com.gruppo42.app.ui.dialogs.ChangeListener;
 
 /**
@@ -30,21 +34,23 @@ import com.gruppo42.app.ui.dialogs.ChangeListener;
  */
 public class EditorFragment extends DialogFragment {
 
-    private byte[] image;
+    private Bitmap image;
     private String name;
     private String username;
     private String email;
     private UserApi api;
+    private SessionManager sessionManager;
     private FragmentEditorBinding binding;
     private ChangeListener nameListener;
     private ChangeListener mailListener;
     private ChangeListener imageListener;
+    private ChangeListener onLogout;
 
     public EditorFragment() {
         // Required empty public constructor
     }
 
-    public EditorFragment(byte[] image, String name, String username, String email)
+    public EditorFragment(Bitmap image, String name, String username, String email)
     {
         super();
         this.api = UserApi.Instance.get();
@@ -85,28 +91,41 @@ public class EditorFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        this.sessionManager = new SessionManager(getContext());
         this.api = UserApi.Instance.get();
         binding = FragmentEditorBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         binding.email.setText(email);
         binding.name.setText(name);
-        Glide.with(getContext())
-                .asBitmap()
-                .load(image)
-                .placeholder(new ColorDrawable(Color.GRAY))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .circleCrop()
-                .into(binding.imageViewProfilePic);
+        if(this.image==null)
+            Glide.with(getContext())
+                    .asBitmap()
+                    .load(R.drawable.profile_placeholder)
+                    .placeholder(R.drawable.place_holder_profile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .circleCrop()
+                    .into(binding.imageViewProfilePic);
+        else
+            Glide.with(getContext())
+                    .asBitmap()
+                    .load(image)
+                    .placeholder(R.drawable.place_holder_profile)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .circleCrop()
+                    .into(binding.imageViewProfilePic);
+
         binding.imageViewProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PhotoDialog dialog = new PhotoDialog();
+                dialog.setCallApi(true);
                 dialog.setOnSuccessListener(new ChangeListener() {
                     @Override
                     public void onChange(Object object) {
+                        Pair<String, Bitmap> pair = (Pair<String, Bitmap>)object;
                         Glide.with(getContext())
                                 .asBitmap()
-                                .load((byte[])object)
+                                .load(pair.second)
                                 .placeholder(new ColorDrawable(Color.GRAY))
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .circleCrop()
@@ -121,6 +140,22 @@ public class EditorFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Log.d("Click", "Logout");
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                onLogout.onChange(null);
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
             }
         });
 
@@ -209,5 +244,8 @@ public class EditorFragment extends DialogFragment {
 
     public void setImageListener(ChangeListener imageListener) {
         this.imageListener = imageListener;
+    }
+    public void setOnLogout(ChangeListener onLogout) {
+        this.onLogout = onLogout;
     }
 }

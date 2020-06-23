@@ -16,26 +16,23 @@ public interface UserApi {
 
     @GET("user/me")
     Call<UserDTO> getUserDetails(@Header("AUTHORIZATION") String bearerToken);
-
     @DELETE("auth/user/me/delete")
     Call<UserApiResponse> deleteUser(@Header("AUTHORIZATION") String bearerToken,
                                      @Body LoginRequest loginRequest);
     @POST("user/me")
     Call<UserApiResponse> changeProfileDetails(@Header("AUTHORIZATION") String bearerToken,
                                                @Body ProfileChangeRequest request);
-
     @POST("auth/newPassword")
     Call<UserApiResponse> changePassword(@Header("AUTHORIZATION") String bearerToken,
                                          @Body PasswordChangeRequest request);
-
     @GET("user/checkUsernameAvailability")
     Call<AvailableResponse> checkUsernameAvailable(@Query("username") String username);
-
     @GET("user/checkEmailAvailability")
     Call<AvailableResponse> checkEmailAvailable(@Query("email") String email);
-
     @POST("auth/signup")
     Call<UserApiResponse> signupUser(@Body SignUpRequest signUpRequest);
+    @POST("auth/signin")
+    Call<LoginResponse> signinUser(@Body LoginRequest loginRequest);
 
     class Instance {
 

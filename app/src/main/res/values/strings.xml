@@ -3,28 +3,22 @@
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
     <string name="title_search">Search</string>
-    <string name="filter_button">Filtra</string>
     <string name="year_select">Select year</string>
-    <string name="genre_select">Select genre</string>
     <string name="region_select">Select region</string>
     <string name="language_select">Select language</string>
     <string name="name">Name</string>
-    <string name="username">User</string>
     <string name="email">Email</string>
-    <string name="email_edit">Edit email</string>
-    <string name="name_edit">Edit name</string>
+    <string name="submit">Submit</string>
+    <string name="email_edit">Change email</string>
+    <string name="name_edit">Change name</string>
     <string name="password">Change password</string>
     <string name="camera">Open camera</string>
     <string name="gallery">Open gallery</string>
     <string name="logout">Logout</string>
     <string name="delete">Delete account</string>
-    <string name="username_edit">Edit username</string>
     <string name="emptysearchresults">Nothing found</string>
     <string name="nomoviesfound">No movies</string>
-    <string name="cancel">Cancel</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="submit">Submit</string>
     <string name="upcoming">Upcoming Movies</string>
     <string name="action">Action Movies</string>
     <string name="adventure">Adventure Movies</string>
@@ -46,12 +40,12 @@
     <string name="western">Western Movies</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="edit_profile">Profile settings</string>
+    <string name="change_picture">Change picture</string>
     <string name="confirm_sign_up">Let\'s go!</string>
     <string name="back_to_login">Already have an account? Login!</string>
     <string name="forgot_pass">Forget password?</string>
     <string name="login">Login</string>
     <string name="register">New user? Sign up!</string>
     <string name="title_activity_splash_screen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

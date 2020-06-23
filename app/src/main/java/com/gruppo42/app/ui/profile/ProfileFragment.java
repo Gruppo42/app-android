@@ -1,6 +1,7 @@
 package com.gruppo42.app.ui.profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,10 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.gruppo42.app.R;
+import com.gruppo42.app.activities.Login;
+import com.gruppo42.app.activities.MainActivity;
+import com.gruppo42.app.activities.SplashScreenActivity;
+import com.gruppo42.app.session.SessionManager;
 import com.gruppo42.app.ui.dialogs.ChangeListener;
 import com.gruppo42.app.ui.profile.dialogs.editor.EditorFragment;
 
@@ -50,7 +56,7 @@ public class ProfileFragment extends Fragment {
     private Button editButton;
     private List<String> favList;
     private List<String> watchList;
-    private String token;
+    private SessionManager sessionManager;
     private ViewGroup container;
     private ShimmerFrameLayout shimmer;
 
@@ -59,8 +65,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         this.container = container;
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        token = sharedPref.getString("user", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTkyNzk1ODg3LCJleHAiOjE1OTM0MDA2ODd9.HadRp2srca8WlO3VcVr1x5CLOT6i3USoYLO8HTZyjiHtenupH7BBkO7KV_7hznacTIDCQhWL6oHovvee5Nzkeg");
+        this.sessionManager = new SessionManager(getContext());
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         this.nameSurname = root.findViewById(R.id.textViewNameSurname);
         this.username = root.findViewById(R.id.textViewUsername);
@@ -101,23 +106,22 @@ public class ProfileFragment extends Fragment {
         TabLayoutMediator mediator = new TabLayoutMediator(tabLayout, pager,
                 (tab, position) -> addIcon(tab, position));
         mediator.attach();
-        profileViewModel = new ProfileViewModel(token);
+        profileViewModel = new ProfileViewModel(sessionManager.getUserAuthorization());
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-                if(drawable==null)
-                    return;
                 Bitmap bitmap = drawable.getBitmap();
                 ///EditorFragment dialogEditor = new EditorFragment(bitmap, nameSurname.getText()+"", username.getText()+"", email);
-                EditorFragment dialogEditor = new EditorFragment(decodedString, nameSurname.getText()+"", username.getText()+"", email);
+                EditorFragment dialogEditor = new EditorFragment(bitmap, nameSurname.getText()+"", username.getText()+"", email);
                 dialogEditor.show(getParentFragmentManager(), "tag");
                 dialogEditor.setImageListener(new ChangeListener() {
                     @Override
                     public void onChange(Object object) {
+                        Pair<String, Bitmap> pair = (Pair<String, Bitmap>) object;
                         Glide.with(getContext())
                                 .asBitmap()
-                                .load((byte[])object)
+                                .load(pair.second)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .circleCrop()
                                 .into(imageView);
@@ -132,6 +136,13 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onChange(Object object) {
                         nameSurname.setText((String)object);
+                    }
+                });
+                dialogEditor.setOnLogout(new ChangeListener() {
+                    @Override
+                    public void onChange(Object object) {
+                        sessionManager.logoutFromSession();
+                        getActivity().finish();
                     }
                 });
             }
@@ -161,8 +172,34 @@ public class ProfileFragment extends Fragment {
             this.username.setText("@"+s);
         });
         profileViewModel.getProfileImage().observeForever(s -> {
-            if(s==null || s.length()==0)
+            if(s==null || s.length()==0) {
+                Glide.with(this.container.getContext())
+                        .asBitmap()
+                        .load(R.drawable.profile_placeholder)
+                        .placeholder(new ColorDrawable(Color.GRAY))
+                        .error(new ColorDrawable(Color.GRAY))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .circleCrop()
+                        .addListener(new RequestListener<Bitmap>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                shimmer.stopShimmer();
+                                shimmer.setVisibility(View.GONE);
+                                imageView.setVisibility(View.VISIBLE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                shimmer.stopShimmer();
+                                shimmer.setVisibility(View.GONE);
+                                imageView.setVisibility(View.VISIBLE);
+                                return false;
+                            }
+                        })
+                        .into(imageView);
                 return;
+            }
             decodedString = Base64.decode(s, Base64.DEFAULT);
             //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             Glide.with(this.container.getContext())

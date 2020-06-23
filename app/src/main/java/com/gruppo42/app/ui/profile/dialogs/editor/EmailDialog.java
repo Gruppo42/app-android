@@ -20,6 +20,7 @@ import com.gruppo42.app.api.models.ProfileChangeRequest;
 import com.gruppo42.app.api.models.UserApi;
 import com.gruppo42.app.api.models.UserApiResponse;
 import com.gruppo42.app.databinding.EmailDialogBinding;
+import com.gruppo42.app.session.SessionManager;
 import com.gruppo42.app.ui.dialogs.ChangeListener;
 
 import retrofit2.Call;
@@ -29,10 +30,10 @@ import retrofit2.Response;
 public class EmailDialog extends DialogFragment {
 
     private EmailDialogBinding binding;
-    private String userToken;
     private ChangeListener onSuccessListener = null;
     private boolean emailAvailable;
     private UserApi api;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,7 @@ public class EmailDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         emailAvailable = false;
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        userToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTkyNzk1ODg3LCJleHAiOjE1OTM0MDA2ODd9.HadRp2srca8WlO3VcVr1x5CLOT6i3USoYLO8HTZyjiHtenupH7BBkO7KV_7hznacTIDCQhWL6oHovvee5Nzkeg";//sharedPref.getString("user", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTkyNzkzMzg4LCJleHAiOjE1OTMzOTgxODh9.rBQkpdkGybnM2qK5G4c3ueGjkGW0zTfyM9Up42R8HY56_to1KJuOfh9gPRg2_IAO7Ymgul_5WCv9Za-QFazFJQ");
+        sessionManager = new SessionManager(getContext());
         api = UserApi.Instance.get();
         binding = EmailDialogBinding.inflate(inflater, container, false);
         binding.confirm.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +117,7 @@ public class EmailDialog extends DialogFragment {
                 binding.emailText.getText().length()>7 &&
                 emailAvailable)
         {
-            api.changeProfileDetails(userToken,
+            api.changeProfileDetails(sessionManager.getUserAuthorization(),
                                      new ProfileChangeRequest(null, binding.emailText.getText().toString(), null))
                     .enqueue(new Callback<UserApiResponse>() {
                         @Override

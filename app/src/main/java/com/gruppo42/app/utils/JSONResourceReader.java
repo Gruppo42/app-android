@@ -1,4 +1,4 @@
-package com.example.app2.utils;
+package com.gruppo42.app.utils;
 
 import android.content.res.Resources;
 import android.util.Log;

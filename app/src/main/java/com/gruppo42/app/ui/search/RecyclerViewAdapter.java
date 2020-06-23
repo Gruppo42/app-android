@@ -255,7 +255,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageView = itemView.findViewById(R.id.imageView);
             title = itemView.findViewById(R.id.movieTitle);
             year = itemView.findViewById(R.id.movieYear);
-            chipGroup = itemView.findViewById(R.id.movieGenreChips);
             shimmerFrameLayout = itemView.findViewById(R.id.shimmer_view_container);
             imageView.setClipToOutline(true);
         }

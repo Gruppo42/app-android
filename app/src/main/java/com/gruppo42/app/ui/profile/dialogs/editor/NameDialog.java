@@ -16,6 +16,7 @@ import com.gruppo42.app.api.models.ProfileChangeRequest;
 import com.gruppo42.app.api.models.UserApi;
 import com.gruppo42.app.api.models.UserApiResponse;
 import com.gruppo42.app.databinding.NameDialogBinding;
+import com.gruppo42.app.session.SessionManager;
 import com.gruppo42.app.ui.dialogs.ChangeListener;
 
 import retrofit2.Call;
@@ -25,9 +26,9 @@ import retrofit2.Response;
 public class NameDialog extends DialogFragment {
 
     private NameDialogBinding binding;
-    private String userToken;
     private UserApi api;
     private ChangeListener onSuccessListener = null;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,7 @@ public class NameDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        userToken = sharedPref.getString("user", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTkyNzk1ODg3LCJleHAiOjE1OTM0MDA2ODd9.HadRp2srca8WlO3VcVr1x5CLOT6i3USoYLO8HTZyjiHtenupH7BBkO7KV_7hznacTIDCQhWL6oHovvee5Nzkeg");
+        sessionManager = new SessionManager(getContext());
         api = UserApi.Instance.get();
         binding = NameDialogBinding.inflate(inflater, container, false);
         binding.confirm.setOnClickListener(new View.OnClickListener() {
@@ -55,26 +55,21 @@ public class NameDialog extends DialogFragment {
         return binding.getRoot();
     }
 
-    private void sendRequest()
-    {
-        if(binding.editText.getText().length()>=3)
-        {
-            api.changeProfileDetails(userToken,
-                    new ProfileChangeRequest(binding.editText.getText().toString(),null, null))
+    private void sendRequest() {
+        if (binding.editText.getText().length() >= 3) {
+            api.changeProfileDetails(sessionManager.getUserAuthorization(),
+                    new ProfileChangeRequest(binding.editText.getText().toString(), null, null))
                     .enqueue(new Callback<UserApiResponse>() {
                         @Override
                         public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
-                            if(response.isSuccessful())
-                            {
+                            if (response.isSuccessful()) {
                                 binding.name.setErrorEnabled(false);
                                 binding.name.setHelperTextColor(ColorStateList.valueOf(Color.GREEN));
                                 binding.name.setHelperTextEnabled(true);
                                 binding.name.setHelperText("Name changed successfully!");
-                                if(onSuccessListener!=null)
+                                if (onSuccessListener != null)
                                     onSuccessListener.onChange(binding.editText.getText().toString());
-                            }
-                            else
-                            {
+                            } else {
                                 binding.name.setErrorEnabled(true);
                                 binding.name.setError("Could not change name!");
                             }
@@ -86,13 +81,12 @@ public class NameDialog extends DialogFragment {
                             binding.name.setError("Could not change name!");
                         }
                     });
-        }
-        else
-        {
+        } else {
             binding.name.setErrorEnabled(true);
             binding.name.setError("Invalid name!");
         }
     }
+
     public void setOnSuccessListener(ChangeListener onSuccessListener) {
         this.onSuccessListener = onSuccessListener;
     }

@@ -22,10 +22,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.LoginRequest;
 import com.gruppo42.app.api.models.UserApi;
+import com.gruppo42.app.api.models.UserApiResponse;
 import com.gruppo42.app.databinding.FragmentEditorBinding;
 import com.gruppo42.app.session.SessionManager;
 import com.gruppo42.app.ui.dialogs.ChangeListener;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +51,7 @@ public class EditorFragment extends DialogFragment {
     private ChangeListener mailListener;
     private ChangeListener imageListener;
     private ChangeListener onLogout;
+    private ChangeListener onDelete;
 
     public EditorFragment() {
         // Required empty public constructor
@@ -147,7 +154,6 @@ public class EditorFragment extends DialogFragment {
                             case DialogInterface.BUTTON_POSITIVE:
                                 onLogout.onChange(null);
                                 break;
-
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;
                         }
@@ -168,6 +174,33 @@ public class EditorFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
+                                NewPasswordDialog passdialog = new NewPasswordDialog("Enter password");
+                                passdialog.setCallApi(false);
+                                passdialog.setOnSuccessListener(new ChangeListener() {
+                                    @Override
+                                    public void onChange(Object object) {
+                                        api.deleteUser(sessionManager.getUserAuthorization(), new LoginRequest("", (String)object))
+                                            .enqueue(new Callback<UserApiResponse>() {
+                                                @Override
+                                                public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
+                                                    Log.d("Delete", response.toString());
+                                                    if(response.isSuccessful()) {
+                                                        onDelete.onChange(null);
+                                                    }else
+                                                    {
+                                                        passdialog.getBinding().password.setErrorEnabled(true);
+                                                        passdialog.getBinding().password.setError("Password not correct!");
+                                                    }
+                                                }
+                                                @Override
+                                                public void onFailure(Call<UserApiResponse> call, Throwable t) {
+                                                    passdialog.getBinding().password.setErrorEnabled(true);
+                                                    passdialog.getBinding().password.setError("Could not connect!");
+                                                }
+                                            });
+                                    }
+                                });
+                                passdialog.show(getParentFragmentManager(), "Password change");
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -184,11 +217,10 @@ public class EditorFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 NewPasswordDialog dialog = new NewPasswordDialog();
+                dialog.setCallApi(true);
                 dialog.setOnSuccessListener(new ChangeListener() {
                     @Override
                     public void onChange(Object object) {
-                        Toast toast = Toast.makeText(getContext(), "Profile password changed", Toast.LENGTH_LONG);
-                        toast.show();
                     }
                 });
                 dialog.show(getParentFragmentManager(), "Password change");
@@ -247,5 +279,9 @@ public class EditorFragment extends DialogFragment {
     }
     public void setOnLogout(ChangeListener onLogout) {
         this.onLogout = onLogout;
+    }
+
+    public void setOnDelete(ChangeListener onDelete) {
+        this.onDelete = onDelete;
     }
 }

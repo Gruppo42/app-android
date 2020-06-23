@@ -59,6 +59,7 @@ public class ProfileFragment extends Fragment {
     private SessionManager sessionManager;
     private ViewGroup container;
     private ShimmerFrameLayout shimmer;
+    private boolean imageAvailable = false;
 
     private ProfileViewModel profileViewModel;
 
@@ -110,6 +111,8 @@ public class ProfileFragment extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!imageAvailable)
+                    return;
                 BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
                 Bitmap bitmap = drawable.getBitmap();
                 ///EditorFragment dialogEditor = new EditorFragment(bitmap, nameSurname.getText()+"", username.getText()+"", email);
@@ -139,6 +142,13 @@ public class ProfileFragment extends Fragment {
                     }
                 });
                 dialogEditor.setOnLogout(new ChangeListener() {
+                    @Override
+                    public void onChange(Object object) {
+                        sessionManager.logoutFromSession();
+                        getActivity().finish();
+                    }
+                });
+                dialogEditor.setOnDelete(new ChangeListener() {
                     @Override
                     public void onChange(Object object) {
                         sessionManager.logoutFromSession();
@@ -217,12 +227,12 @@ public class ProfileFragment extends Fragment {
                             imageView.setVisibility(View.VISIBLE);
                             return false;
                         }
-
                         @Override
                         public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                             shimmer.stopShimmer();
                             shimmer.setVisibility(View.GONE);
                             imageView.setVisibility(View.VISIBLE);
+                            imageAvailable = true;
                             return false;
                         }
                     })

@@ -29,6 +29,20 @@ public class NewPasswordDialog extends DialogFragment {
     private PasswordDialogBinding binding;
     private ChangeListener onSuccessListener = null;
     private SessionManager sessionManager;
+    private boolean callApi = false;
+    private String title;
+
+    public NewPasswordDialog()
+    {
+        super();
+        this.title = "Change password";
+    }
+
+    public NewPasswordDialog(String title)
+    {
+        super();
+        this.title = title;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,45 +63,64 @@ public class NewPasswordDialog extends DialogFragment {
         binding.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendRequest();
+                if(callApi)
+                    sendRequest();
+                else
+                {
+                    if(onSuccessListener!=null)
+                        onSuccessListener.onChange(binding.passwordText.getText().toString());
+                }
             }
         });
+        binding.textView7.setText(title);
         return binding.getRoot();
     }
 
     public void sendRequest()
     {
-        api.changePassword(sessionManager.getUserAuthorization(),
-                        new PasswordChangeRequest(binding.passwordText.getText().toString(),
-                                                    binding.passwordText.getText().toString()))
-                .enqueue(new Callback<UserApiResponse>() {
-                    @Override
-                    public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
-                        Log.d("Debug api", response.toString());
+        if(binding.passwordText.toString().length()>=6) {
+            api.changePassword(sessionManager.getUserAuthorization(),
+                    new PasswordChangeRequest(binding.passwordText.getText().toString(),
+                            binding.passwordText.getText().toString()))
+                    .enqueue(new Callback<UserApiResponse>() {
+                        @Override
+                        public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
+                            Log.d("Debug api", response.toString());
 
-                        if(response.isSuccessful())
-                        {
-                            binding.password.setErrorEnabled(false);
-                            binding.password.setHelperTextColor(ColorStateList.valueOf(Color.GREEN));
-                            binding.password.setHelperTextEnabled(true);
-                            binding.password.setHelperText("Password changed!");
-                            if(onSuccessListener!=null)
-                                onSuccessListener.onChange(null);
+                            if (response.isSuccessful()) {
+                                binding.password.setErrorEnabled(false);
+                                binding.password.setHelperTextColor(ColorStateList.valueOf(Color.GREEN));
+                                binding.password.setHelperTextEnabled(true);
+                                binding.password.setHelperText("Password changed!");
+                                if (onSuccessListener != null)
+                                    onSuccessListener.onChange(null);
+                            } else {
+                                binding.password.setErrorEnabled(true);
+                                binding.password.setError("Password needs to be at least 6 characters!");
+                            }
                         }
-                        else
-                        {
-                            binding.password.setErrorEnabled(true);
-                            binding.password.setError("Password needs to be at least 6 characters!");
+                        @Override
+                        public void onFailure(Call<UserApiResponse> call, Throwable t) {
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<UserApiResponse> call, Throwable t) {
-                    }
-                });
+                    });
+        }
+        else
+        {
+            binding.password.setHelperTextEnabled(false);
+            binding.password.setErrorEnabled(true);
+            binding.password.setError("Password needs to be at least 6 characters!");
+        }
     }
 
     public void setOnSuccessListener(ChangeListener onSuccessListener) {
         this.onSuccessListener = onSuccessListener;
+    }
+
+    public void setCallApi(boolean callApi) {
+        this.callApi = callApi;
+    }
+
+    public PasswordDialogBinding getBinding() {
+        return binding;
     }
 }

@@ -9,12 +9,16 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="submit">Submit</string>
+    <string name="reset_password">Reset password</string>
     <string name="email_edit">Change email</string>
     <string name="name_edit">Change name</string>
     <string name="password">Change password</string>
     <string name="camera">Open camera</string>
+    <string name="proceed">Proceed</string>
     <string name="gallery">Open gallery</string>
+    <string name="acc_created">Account created!</string>
     <string name="logout">Logout</string>
+    <string name="forgot_pass2">Forgot your password?</string>
     <string name="delete">Delete account</string>
     <string name="emptysearchresults">Nothing found</string>
     <string name="nomoviesfound">No movies</string>

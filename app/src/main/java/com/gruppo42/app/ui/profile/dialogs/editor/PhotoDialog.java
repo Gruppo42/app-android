@@ -43,7 +43,6 @@ public class PhotoDialog extends BottomSheetDialogFragment {
 
     private PhotoDialogBinding binding;
     private ChangeListener onSuccessListener = null;
-    private byte[] imageB;
     private UserApi api;
     private SessionManager sessionManager;
     private boolean callApi = false;
@@ -137,8 +136,9 @@ public class PhotoDialog extends BottomSheetDialogFragment {
                                 toast.show();
                             }
                         });
-                else
-                    onSuccessListener.onChange(encodedImage);
+                else {
+                    onSuccessListener.onChange(new Pair<String, Bitmap>(encodedImage, selectedImage));
+                }
             } catch (Exception e)
             {}
     }

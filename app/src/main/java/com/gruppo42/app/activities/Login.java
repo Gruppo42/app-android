@@ -2,8 +2,10 @@ package com.gruppo42.app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import com.gruppo42.app.api.models.LoginRequest;
@@ -66,16 +68,20 @@ public class Login extends AppCompatActivity {
                     return;
                 }
                 binding.animationView.playAnimation();
+                binding.animationView.loop(true);
                 api.signinUser(new LoginRequest(binding.usernameText.getText().toString(),
                                                 binding.passwordText.getText().toString()))
                         .enqueue(new Callback<LoginResponse>() {
                             @Override
                             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                                binding.animationView.cancelAnimation();
+                                binding.animationView.pauseAnimation();
+                                binding.animationView.loop(false);
                                 if(response.isSuccessful())
                                 {
                                     sessionManager.createLoginSession(response.body().getAccessToken());
                                     Intent intent = new Intent(Login.this, MainActivity.class);
+                                    binding.usernameText.getText().clear();
+                                    binding.passwordText.getText().clear();
                                     startActivity(intent);
                                 }
                                 else {
@@ -87,9 +93,24 @@ public class Login extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                                binding.animationView.cancelAnimation();
+                                binding.animationView.pauseAnimation();
+                                binding.animationView.loop(false);
                             }
                         });
+            }
+        });
+        binding.forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, ForgetPassword.class);
+                Pair[] pairs = new Pair[4];
+                pairs[0] = new Pair<View, String>(binding.animationView, "logo");
+                pairs[1] = new Pair<View, String>(binding.forgotPassword, "title");
+                pairs[2] = new Pair<View, String>(binding.username, "editMail");
+                pairs[3] = new Pair<View, String>(binding.login, "loginBTN");
+                ActivityOptions options = ActivityOptions
+                        .makeSceneTransitionAnimation(Login.this, pairs);
+                startActivity(intent, options.toBundle());
             }
         });
         setContentView(view);

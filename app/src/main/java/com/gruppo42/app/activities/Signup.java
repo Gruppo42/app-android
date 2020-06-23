@@ -2,10 +2,13 @@ package com.gruppo42.app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -18,6 +21,8 @@ import com.gruppo42.app.api.models.SignUpRequest;
 import com.gruppo42.app.api.models.UserApi;
 import com.gruppo42.app.api.models.UserApiResponse;
 import com.gruppo42.app.databinding.ActivitySignupBinding;
+import com.gruppo42.app.ui.dialogs.ChangeListener;
+import com.gruppo42.app.ui.profile.dialogs.editor.PhotoDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +35,7 @@ public class Signup extends AppCompatActivity {
     private ActivitySignupBinding binding;
     private boolean usernameAvailable;
     private boolean emailAvailable;
+    private String image = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,31 @@ public class Signup extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .circleCrop()
                 .into(binding.profilePic);
+
+        binding.profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PhotoDialog dialog = new PhotoDialog();
+                dialog.setCallApi(false);
+                dialog.setOnSuccessListener(new ChangeListener() {
+                    @Override
+                    public void onChange(Object object) {
+                        Pair<String, Bitmap> pair = (Pair<String, Bitmap>)object;
+                        image = pair.first;
+                        Glide.with(Signup.this)
+                                .asBitmap()
+                                .load(pair.second)
+                                .placeholder(new ColorDrawable(Color.GRAY))
+                                .error(new ColorDrawable(Color.GRAY))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .circleCrop()
+                                .into(binding.profilePic);
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show(getSupportFragmentManager(), "Photo pick");
+            }
+        });
 
         binding.emailText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -204,15 +235,19 @@ public class Signup extends AppCompatActivity {
         api.signupUser(new SignUpRequest(binding.nameText.getText().toString(),
                 binding.usernameText.getText().toString(),
                 binding.emailText.getText().toString(),
-                "",
+                image,
                 binding.passwordText.getText().toString()))
                 .enqueue(new Callback<UserApiResponse>() {
                     @Override
                     public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
                         Log.d("Signup", response.toString());
                         if (response.isSuccessful()) {
-                            if (response.body().isSuccess())
+                            if (response.body().isSuccess()) {
                                 Log.d("Signup", "User created!");
+                                Intent intent = new Intent(Signup.this, SignUpSuccess.class);
+                                startActivity(intent);
+                                finish();
+                            }
                             else
                                 Log.d("Signup", "User creation failed!");
                         }

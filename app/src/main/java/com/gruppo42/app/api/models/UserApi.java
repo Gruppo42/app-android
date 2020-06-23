@@ -1,12 +1,14 @@
 package com.gruppo42.app.api.models;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -16,7 +18,7 @@ public interface UserApi {
 
     @GET("user/me")
     Call<UserDTO> getUserDetails(@Header("AUTHORIZATION") String bearerToken);
-    @DELETE("auth/user/me/delete")
+    @HTTP(method = "DELETE", path = "auth/user/me/delete", hasBody = true)
     Call<UserApiResponse> deleteUser(@Header("AUTHORIZATION") String bearerToken,
                                      @Body LoginRequest loginRequest);
     @POST("user/me")
@@ -27,6 +29,8 @@ public interface UserApi {
                                          @Body PasswordChangeRequest request);
     @GET("user/checkUsernameAvailability")
     Call<AvailableResponse> checkUsernameAvailable(@Query("username") String username);
+    @GET("auth/resetPassword")
+    Call<UserApiResponse> resetPassword(@Query("email") String email);
     @GET("user/checkEmailAvailability")
     Call<AvailableResponse> checkEmailAvailable(@Query("email") String email);
     @POST("auth/signup")

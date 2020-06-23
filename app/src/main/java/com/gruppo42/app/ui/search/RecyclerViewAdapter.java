@@ -160,7 +160,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .apply(requestOptions)
                 .into(holder.imageView);
         holder.title.setText(item.getTitle());
-        holder.year.setText(item.getYear());
+        if (item.getYear() == null) {
+            holder.year.setText("No year available");
+        }
+        else {
+            holder.year.setText(item.getYear());
+        }
         holder.genres.setText(item.getStrGenres());
         holder.bind(item, this.onItemClickListener);
     }

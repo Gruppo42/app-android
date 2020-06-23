@@ -36,5 +36,9 @@
         <argument
             android:name="MovieItem"
             app:argType="com.gruppo42.app.api.models.MovieItem" />
+        <action
+            android:id="@+id/upAction"
+            app:popUpTo="@id/movieDetailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

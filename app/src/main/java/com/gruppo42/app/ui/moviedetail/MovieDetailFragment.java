@@ -20,12 +20,14 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
@@ -92,24 +94,23 @@ public class MovieDetailFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
             Date today = calendar.getTime();
             String movieDateString = movieItem.getDate();
+            Log.d(TAG, "prova" + movieDateString);
             Date movieDate = null;
             try {
                 movieDate = new SimpleDateFormat("yyyy-MM-dd").parse(movieDateString);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            long difference = movieDate.getTime() - today.getTime();
-            difference = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
-            if (difference > 0) {
-                difference++;
-                ImageView gradientBgImageDownRight = view.findViewById(R.id.gradientBgImageDownRight);
-                gradientBgImageDownRight.setVisibility(View.VISIBLE);
-                countdown.setText(difference + " days left");
+            if (movieDate != null) {
+                long difference = movieDate.getTime() - today.getTime();
+                difference = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
+                if (difference > 0) {
+                    difference++;
+                    ImageView gradientBgImageDownRight = view.findViewById(R.id.gradientBgImageDownRight);
+                    gradientBgImageDownRight.setVisibility(View.VISIBLE);
+                    countdown.setText(difference + " days left");
+                }
             }
-
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String strToday = simpleDateFormat.format(today);
 
             RequestOptions requestOptions = new RequestOptions();
             requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(10));
@@ -127,11 +128,24 @@ public class MovieDetailFragment extends Fragment {
 
             binding.detailMovieTitle.setText(movieItem.getTitle());
 
-            binding.detailMovieYear.setText(movieItem.getYear());
+            if (movieItem.getYear() == null) {
+                binding.detailMovieYear.setText("No year available");
+            } else {
+                binding.detailMovieYear.setText(movieItem.getYear());
+            }
 
             binding.detailMovieGenres.setText(movieItem.getStrGenres());
 
             binding.detailMovieDescription.setText(movieItem.getDescription());
+
+            ImageButton upButton = view.findViewById(R.id.up_button);
+
+            upButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Navigation.findNavController(v).navigate(MovieDetailFragmentDirections.upAction());
+                }
+            });
 
             ImageButton trailerButton = view.findViewById(R.id.detail_movie_trailer);
 

@@ -2,10 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gruppo42.app">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 
     <application
         android:allowBackup="true"
@@ -14,13 +13,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.Signup"></activity>
+        <activity android:name=".activities.Login" />
         <activity
-            android:name="com.gruppo42.app.activities.MainActivity">
+            android:name=".activities.SplashScreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.MainActivity" />
     </application>
+
 </manifest>

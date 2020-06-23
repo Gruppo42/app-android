@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.Signup"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+
+    <ImageView
+        android:id="@+id/profilePic"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:foreground="@drawable/ic_camera"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            android:hint="Name"
+            app:counterEnabled="false"
+            app:counterMaxLength="42"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            android:hint="Username"
+            app:counterEnabled="false"
+            app:counterMaxLength="20"
+            android:layout_marginTop="4dp"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/email"
+            android:hint="Email"
+            android:layout_marginTop="4dp"
+            app:endIconMode="clear_text"
+            app:counterEnabled="false"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailText"
+                android:inputType="textEmailAddress">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/password"
+            android:hint="Password"
+            app:passwordToggleEnabled="true"
+            android:layout_marginTop="4dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/BTNSignup"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_sign_up" />
+
+        <TextView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:onClick="openSignIn"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center"
+            android:text="@string/back_to_login"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    </LinearLayout>
+
+</LinearLayout>

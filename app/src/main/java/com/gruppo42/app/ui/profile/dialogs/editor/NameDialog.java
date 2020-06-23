@@ -2,6 +2,7 @@ package com.gruppo42.app.ui.profile.dialogs.editor;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,29 +66,31 @@ public class NameDialog extends DialogFragment {
                         public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
                             if(response.isSuccessful())
                             {
-                                binding.status.setTextColor(Color.GREEN);
-                                binding.status.setText("Name changed successfully!");
+                                binding.name.setErrorEnabled(false);
+                                binding.name.setHelperTextColor(ColorStateList.valueOf(Color.GREEN));
+                                binding.name.setHelperTextEnabled(true);
+                                binding.name.setHelperText("Name changed successfully!");
                                 if(onSuccessListener!=null)
                                     onSuccessListener.onChange(binding.editText.getText().toString());
                             }
                             else
                             {
-                                binding.status.setTextColor(Color.RED);
-                                binding.status.setText("Could not change name!");
+                                binding.name.setErrorEnabled(true);
+                                binding.name.setError("Could not change name!");
                             }
                         }
 
                         @Override
                         public void onFailure(Call<UserApiResponse> call, Throwable t) {
-                            binding.status.setTextColor(Color.RED);
-                            binding.status.setText("Could not change name!");
+                            binding.name.setErrorEnabled(true);
+                            binding.name.setError("Could not change name!");
                         }
                     });
         }
         else
         {
-            binding.status.setTextColor(Color.RED);
-            binding.status.setText("Invalid name!");
+            binding.name.setErrorEnabled(true);
+            binding.name.setError("Invalid name!");
         }
     }
     public void setOnSuccessListener(ChangeListener onSuccessListener) {

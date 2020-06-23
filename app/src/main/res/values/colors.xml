@@ -6,4 +6,6 @@
     <color name="colorBottomNavigationView">#3B434D</color>
     <color name="deleteAcc">#D64747</color>
     <color name="logout">#F09348</color>
+    <color name="colorSecondayButton">#7898c2</color>
+    <color name="black_overlay">#66000000</color>
 </resources>

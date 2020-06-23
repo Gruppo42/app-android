@@ -2,6 +2,7 @@ package com.gruppo42.app.ui.profile.dialogs.editor;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,40 +57,33 @@ public class NewPasswordDialog extends DialogFragment {
 
     public void sendRequest()
     {
-        if(true)
-        {
-            api.changePassword(userToken, new PasswordChangeRequest(binding.editTextTextPassword.getText().toString(),
-                                                                    binding.editTextTextPassword2.getText().toString()))
-                    .enqueue(new Callback<UserApiResponse>() {
-                        @Override
-                        public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
-                            Log.d("Debug api", response.toString());
+        api.changePassword(userToken, new PasswordChangeRequest(binding.passwordText.getText().toString(),
+                                                                binding.passwordText.getText().toString()))
+                .enqueue(new Callback<UserApiResponse>() {
+                    @Override
+                    public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
+                        Log.d("Debug api", response.toString());
 
-                            if(response.isSuccessful())
-                            {
-                                binding.status.setTextColor(Color.GREEN);
-                                binding.status.setText("Password changed!");
-                                if(onSuccessListener!=null)
-                                    onSuccessListener.onChange(null);
-                            }
-                            else
-                            {
-                                binding.status.setTextColor(Color.RED);
-                                binding.status.setText("Invalid passwords!");
-                            }
+                        if(response.isSuccessful())
+                        {
+                            binding.password.setErrorEnabled(false);
+                            binding.password.setHelperTextColor(ColorStateList.valueOf(Color.GREEN));
+                            binding.password.setHelperTextEnabled(true);
+                            binding.password.setHelperText("Password changed!");
+                            if(onSuccessListener!=null)
+                                onSuccessListener.onChange(null);
                         }
-
-                        @Override
-                        public void onFailure(Call<UserApiResponse> call, Throwable t) {
-
+                        else
+                        {
+                            binding.password.setErrorEnabled(true);
+                            binding.password.setError("Password needs to be at least 6 characters!");
                         }
-                    });
-        }
-        else
-        {
-            binding.status.setTextColor(Color.RED);
-            binding.status.setText("Password do not match!");
-        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserApiResponse> call, Throwable t) {
+                    }
+                });
     }
 
     public void setOnSuccessListener(ChangeListener onSuccessListener) {

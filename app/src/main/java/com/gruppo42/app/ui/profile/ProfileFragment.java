@@ -161,6 +161,8 @@ public class ProfileFragment extends Fragment {
             this.username.setText("@"+s);
         });
         profileViewModel.getProfileImage().observeForever(s -> {
+            if(s==null || s.length()==0)
+                return;
             decodedString = Base64.decode(s, Base64.DEFAULT);
             //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             Glide.with(this.container.getContext())

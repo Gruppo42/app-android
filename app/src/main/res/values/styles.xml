@@ -19,7 +19,7 @@
     <style name="ChipTextStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
 
     </style>
-    
+
     <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:background">@color/colorPrimary</item>
@@ -37,6 +37,18 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="actionMenuTextColor">@color/colorAccent</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>

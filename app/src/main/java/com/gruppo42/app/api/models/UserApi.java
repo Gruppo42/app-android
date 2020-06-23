@@ -9,6 +9,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface UserApi {
     String ENDPOINT = "https://gruppo42.azurewebsites.net/api/";
@@ -26,6 +27,15 @@ public interface UserApi {
     @POST("auth/newPassword")
     Call<UserApiResponse> changePassword(@Header("AUTHORIZATION") String bearerToken,
                                          @Body PasswordChangeRequest request);
+
+    @GET("user/checkUsernameAvailability")
+    Call<AvailableResponse> checkUsernameAvailable(@Query("username") String username);
+
+    @GET("user/checkEmailAvailability")
+    Call<AvailableResponse> checkEmailAvailable(@Query("email") String email);
+
+    @POST("auth/signup")
+    Call<UserApiResponse> signupUser(@Body SignUpRequest signUpRequest);
 
     class Instance {
 

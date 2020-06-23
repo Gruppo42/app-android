@@ -1,5 +1,7 @@
 package com.gruppo42.app.ui.moviedetail;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -157,7 +159,7 @@ public class MovieDetailFragment extends Fragment {
 
                                 // There isn't any video for the movie
                                 if (trailerResultDTOList.size() == 0) {
-                                    Toast toast = Toast.makeText(getContext(), "No available trailer", Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(getContext(), "No trailer available", Toast.LENGTH_SHORT);
                                     toast.setGravity(0, 0, 1000);
                                     toast.show();
                                 }
@@ -175,14 +177,15 @@ public class MovieDetailFragment extends Fragment {
 
                                     // The movie has no trailer on Youtube
                                     if (trailerUrl == "") {
-                                        Toast toast = Toast.makeText(getContext(), "No available trailer", Toast.LENGTH_SHORT);
+                                        Toast toast = Toast.makeText(getContext(), "No trailer available", Toast.LENGTH_SHORT);
                                         toast.setGravity(0, 0, 1000);
                                         toast.show();
                                     }
                                     // From here I'm sure there is a trailer on Youtube
                                     // So i can play the video
                                     else {
-                                        Log.d(TAG, "trailerUrl: " + trailerUrl);
+                                        Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.TRAILER_YOUTUBE_BASE_URL + trailerUrl));
+                                        startActivity(youtubeIntent);
                                     }
                                 }
                             }

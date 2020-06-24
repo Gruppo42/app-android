@@ -21,8 +21,7 @@ public class HomeMoviesViewModel extends ViewModel {
     private int currentResults;
     private boolean isLoading;
 
-    public HomeMoviesViewModel() {
-    }
+    public HomeMoviesViewModel() {}
 
     public LiveData<Resource<List<ResultDTO>>> getTrendingMoviesResource(String media_type, String time_window) {
 

@@ -47,6 +47,11 @@ public class HomeMoviesRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     Resource<List<ResultDTO>> resource = new Resource<>();
                     resource.setData(response.body().getResults());
+                    for (int i = 0; i < resource.getData().size(); i++) {
+                        if (resource.getData().get(i).getBackdrop_path() == null) {
+                            resource.getData().remove(i);
+                        }
+                    }
                     resource.setTotalResults(response.body().getTotal_results());
                     resource.setStatusCode(response.code());
                     resource.setStatusMessage(response.message());
@@ -93,8 +98,18 @@ public class HomeMoviesRepository {
                         currentResultDTOList.remove(currentResultDTOList.size() - 1);
                         currentResultDTOList.addAll(response.body().getResults());
                         resource.setData(currentResultDTOList);
+                        for (int i = 0; i < resource.getData().size(); i++) {
+                            if (resource.getData().get(i).getPoster_path() == null) {
+                                resource.getData().remove(i);
+                            }
+                        }
                     } else {
                         resource.setData(response.body().getResults());
+                        for (int i = 0; i < resource.getData().size(); i++) {
+                            if (resource.getData().get(i).getPoster_path() == null) {
+                                resource.getData().remove(i);
+                            }
+                        }
                     }
 
                     resource.setTotalResults(response.body().getTotal_results());

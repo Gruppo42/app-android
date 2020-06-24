@@ -60,5 +60,4 @@ dependencies {
     apply plugin: "androidx.navigation.safeargs"
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
 }

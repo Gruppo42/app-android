@@ -14,12 +14,14 @@ package com.gruppo42.app.ui.search;
         import androidx.lifecycle.ViewModelProviders;
         import com.gruppo42.app.R;
         import androidx.appcompat.widget.Toolbar;
+        import androidx.navigation.Navigation;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
 
         import com.gruppo42.app.api.models.LanguagesDTO;
         import com.gruppo42.app.api.models.MovieItem;
         import com.gruppo42.app.api.models.RegionsDTO;
+        import com.gruppo42.app.api.models.ResultDTO;
         import com.gruppo42.app.ui.dialogs.ChangeListener;
         import com.gruppo42.app.ui.dialogs.ItemPickDialog;
         import com.gruppo42.app.ui.dialogs.YearPickDialog;
@@ -28,6 +30,7 @@ package com.gruppo42.app.ui.search;
         import com.google.android.material.chip.Chip;
         import com.google.gson.Gson;
         import com.google.gson.reflect.TypeToken;
+        import com.gruppo42.app.ui.home.HomeFragmentDirections;
         import com.gruppo42.app.utils.Constants;
 
         import java.lang.reflect.Type;
@@ -41,6 +44,7 @@ package com.gruppo42.app.ui.search;
 
 public class SearchFragment extends Fragment
 {
+    private static final String TAG = "SearchFragment";
     private final String endpoint = "https://api.themoviedb.org/3/";
     private SearchViewModel searchViewModel;
     private TextView view2;
@@ -64,7 +68,13 @@ public class SearchFragment extends Fragment
         yearChip = root.findViewById(R.id.chipYear);
         recyclerView = root.findViewById(R.id.searchRecycler);
         View noDataview = root.findViewById(R.id.textView4);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), recyclerView, noDataview);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), recyclerView, noDataview, new RecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(MovieItem movieItem) {
+                SearchFragmentDirections.ShowMovieDetailAction2 action = SearchFragmentDirections.showMovieDetailAction2(movieItem);
+                Navigation.findNavController(root).navigate(action);
+            }
+        });
         ArrayList<MovieItem> filmItems = new ArrayList<>();
         ArrayList<String> generes = new ArrayList<>();
         generes.add("Thriller");
@@ -227,14 +237,16 @@ public class SearchFragment extends Fragment
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        SearchView view = (SearchView) toolbar.getMenu().getItem(0).getActionView();
-        outState.putString("query", view.getQuery().toString());
-        if(regionChip.getText()!=null)
-            outState.putString("regionChip", regionChip.getText().toString());
-        if(languageChip.getText()!=null)
-            outState.putString("languageChip", languageChip.getText().toString());
-        if(yearChip.getText()!=null)
-            outState.putString("yearChip", yearChip.getText().toString());
+        if (toolbar != null) {
+            SearchView view = (SearchView) toolbar.getMenu().getItem(0).getActionView();
+            outState.putString("query", view.getQuery().toString());
+            if (regionChip.getText() != null)
+                outState.putString("regionChip", regionChip.getText().toString());
+            if (languageChip.getText() != null)
+                outState.putString("languageChip", languageChip.getText().toString());
+            if (yearChip.getText() != null)
+                outState.putString("yearChip", yearChip.getText().toString());
+        }
     }
 
     private void loadJSONObjects()

@@ -5,17 +5,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.Resource;
 import com.gruppo42.app.api.models.ResultDTO;
@@ -43,7 +46,7 @@ public class TrendingMoviesFragment extends Fragment {
 
     private FragmentHomeMovieSliderBinding binding;
 
-    public TrendingMoviesFragment() { }
+    public TrendingMoviesFragment() {}
 
     public static TrendingMoviesFragment newInstance() { return new TrendingMoviesFragment(); }
 
@@ -61,8 +64,8 @@ public class TrendingMoviesFragment extends Fragment {
 
         homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(getActivity(), getTrendingMovieList(Constants.TRENDING_MOVIES_MEDIA_TYPE, Constants.TRENDING_MOVIES_TIME_WINDOW), new HomeRecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ResultDTO resultDTO) {
-                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(resultDTO);
+            public void onItemClick(MovieItem movieItem) {
+                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movieItem);
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -83,8 +86,13 @@ public class TrendingMoviesFragment extends Fragment {
                 if (trendingMoviesResource.getData() != null) {
                     Log.d(TAG, "Success - Total results: " + trendingMoviesResource.getTotalResults() + " Status code: " + trendingMoviesResource.getStatusCode() + " Status message: " + trendingMoviesResource.getStatusMessage());
 
-                    for (int i = 0; i < Constants.SLIDER_LIMIT; i++) {
+                    for (int i = 0; i < trendingMoviesResource.getData().size(); i++) {
+                        if (trendingMoviesResource.getData().get(i) != null && trendingMoviesResource.getData().get(i).getBackdrop_path() == null) {
+                            trendingMoviesResource.getData().remove(i);
+                        }
+                    }
 
+                    for (int i = 0; i < Constants.SLIDER_LIMIT; i++) {
                         if (trendingMoviesResource.getData().get(i) != null) {
                             resultDTOList.add(trendingMoviesResource.getData().get(i));
                             Log.d(TAG, i + " = " + resultDTOList.get(i).getPoster_path());
@@ -94,8 +102,8 @@ public class TrendingMoviesFragment extends Fragment {
 
                     sliderAdapter = new HomeSliderPagerAdapter(getActivity(), resultDTOList, new HomeSliderPagerAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(ResultDTO movie) {
-                            HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movie);
+                        public void onItemClick(MovieItem movieItem) {
+                            HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movieItem);
                             Navigation.findNavController(view).navigate(action);
                         }
                     });

@@ -3,7 +3,8 @@ package com.gruppo42.app.utils;
 public class Constants {
     public static final String MOVIES_API_BASE_URL = "https://api.themoviedb.org/3/";
     public static final String MOVIES_LIST_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w94_and_h141_bestv2";
-    public static final String MOVIES_SLIDER_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w342";
+    public static final String MOVIES_SLIDER_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w533_and_h300_bestv2";
+    public static final String TRAILER_YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
     public static final String MOVIES_API_KEY = "93813d613d04f29f3f713f9a011203fb";
     public static final String TRENDING_MOVIES_MEDIA_TYPE = "movie";
     public static final String TRENDING_MOVIES_TIME_WINDOW = "week";

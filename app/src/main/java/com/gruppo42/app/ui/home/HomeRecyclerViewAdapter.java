@@ -2,6 +2,7 @@ package com.gruppo42.app.ui.home;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.ResultDTO;
 import com.gruppo42.app.utils.Constants;
@@ -29,7 +35,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int LOADING_VIEW_TYPE = 1;
 
     public interface OnItemClickListener {
-        void onItemClick(ResultDTO resultDTO);
+        void onItemClick(MovieItem movieItem);
     }
 
     private List<ResultDTO> resultDTOList;
@@ -102,21 +108,26 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         void bind(ResultDTO resultDTO, OnItemClickListener onItemClickListener) {
 
             String imageUrl = Constants.MOVIES_LIST_IMAGE_BASE_URL + resultDTO.getPoster_path();
-            String imageNewUrl = null;
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(10));
 
             if (imageUrl != null) {
-                imageNewUrl = imageUrl.replace("http://", "https://").trim();
                 Glide
                         .with(itemView.getContext())
-                        .load(imageNewUrl)
+                        .load(imageUrl)
                         .fallback(R.drawable.baseline_movie_white_48dp)
                         .error(R.drawable.baseline_movie_white_48dp)
+                        .transition(GenericTransitionOptions.with(R.transition.zoomin))
+                        .apply(requestOptions)
                         .into(imageViewMovieImage);
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { onItemClickListener.onItemClick(resultDTO); }
+                public void onClick(View v) {
+                    MovieItem movieItem = new MovieItem(resultDTO);
+                    onItemClickListener.onItemClick(movieItem);
+                }
             });
         }
     }

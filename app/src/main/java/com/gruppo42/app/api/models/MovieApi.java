@@ -31,6 +31,9 @@ public interface MovieApi {
                                                 @Query("primary_release_date.gte") String primary_release_date_gte,
                                                 @Query("with_genres") String with_genres,
                                                 @Query("api_key") String api_key);
+    @GET("movie/{movie_id}/videos")
+    Call<TrailerQueryResultDTO> getVideos(@Path("movie_id") int movie_id,
+                                          @Query("api_key") String api_key);
     @GET("3/movie/{movie_id}")
     Call<MovieDetailsDTO> getDeatils(@Path("movie_id") String movieid,
                                      @Query("api_key") String api_key);

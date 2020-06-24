@@ -5,12 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.ResultDTO;
 import com.gruppo42.app.utils.Constants;
@@ -22,7 +25,7 @@ public class HomeSliderPagerAdapter extends PagerAdapter {
     private static final String TAG = "HomeSliderPagerAdapter";
 
     public interface OnItemClickListener {
-        void onItemClick(ResultDTO resultDTO);
+        void onItemClick(MovieItem movieItem);
     }
 
     private List<ResultDTO> resultDTOList;
@@ -40,25 +43,26 @@ public class HomeSliderPagerAdapter extends PagerAdapter {
 
         View slideLayout = this.layoutInflater.inflate(R.layout.slide_item, null);
 
+        TextView slideTitle = slideLayout.findViewById(R.id.slideMovieTitle);
+        slideTitle.setText(resultDTOList.get(position).getTitle());
         ImageView slideImg = slideLayout.findViewById(R.id.slideImage);
 
-        String imageUrl = Constants.MOVIES_SLIDER_IMAGE_BASE_URL + resultDTOList.get(position).getPoster_path();
-        String imageNewUrl = null;
+        String imageUrl = Constants.MOVIES_SLIDER_IMAGE_BASE_URL + resultDTOList.get(position).getBackdrop_path();
 
         if (imageUrl != null) {
-            imageNewUrl = imageUrl.replace("http://", "https://").trim();
             Glide
                     .with(slideLayout)
-                    .load(imageNewUrl)
-                    .fallback(R.drawable.baseline_movie_white_48dp)
-                    .error(R.drawable.baseline_movie_white_48dp)
+                    .load(imageUrl)
+                    .fallback(R.drawable.backdrop_not_found)
+                    .error(R.drawable.backdrop_not_found)
                     .into(slideImg);
         }
 
         slideLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(resultDTOList.get(position));
+                MovieItem movieItem = new MovieItem(resultDTOList.get(position));
+                onItemClickListener.onItemClick(movieItem);
             }
         });
 

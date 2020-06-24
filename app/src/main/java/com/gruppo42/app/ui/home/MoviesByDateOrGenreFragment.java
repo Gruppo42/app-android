@@ -1,26 +1,39 @@
 package com.gruppo42.app.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.Navigator;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gruppo42.app.R;
+import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.Resource;
 import com.gruppo42.app.api.models.ResultDTO;
 import com.gruppo42.app.databinding.FragmentHomeMovieListBinding;
+import com.gruppo42.app.ui.moviedetail.MovieDetailFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -73,8 +86,8 @@ public class MoviesByDateOrGenreFragment extends Fragment {
 
         homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(getActivity(), getMovieByDateOrGenreList(with_genres), new HomeRecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ResultDTO resultDTO) {
-                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(resultDTO);
+            public void onItemClick(MovieItem movieItem) {
+                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movieItem);
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -143,8 +156,9 @@ public class MoviesByDateOrGenreFragment extends Fragment {
                     Log.d(TAG, "Success - Total results: " + moviesByDateOrGenreResource.getTotalResults() + " Status code: " + moviesByDateOrGenreResource.getStatusCode() + "Status message: " + moviesByDateOrGenreResource.getStatusMessage());
 
                     for (int i = 0; i < moviesByDateOrGenreResource.getData().size(); i++) {
-                        if (moviesByDateOrGenreResource.getData().get(i) != null) {
-                            Log.d(TAG, "Action ResultDTO: " + moviesByDateOrGenreResource.getData().get(i).getTitle());
+                        if (moviesByDateOrGenreResource.getData().get(i) != null && moviesByDateOrGenreResource.getData().get(i).getPoster_path() == null) {
+                            Log.d(TAG, "Action ResultDTO: " + moviesByDateOrGenreResource.getData().get(i).getPoster_path());
+                            moviesByDateOrGenreResource.getData().remove(i);
                         }
                     }
                 } else {

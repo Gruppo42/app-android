@@ -19,7 +19,10 @@ import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.MovieApi;
@@ -28,6 +31,7 @@ import com.gruppo42.app.api.models.QueryResultDTO;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.chip.ChipGroup;
 import com.gruppo42.app.api.models.ResultDTO;
+import com.gruppo42.app.ui.home.HomeRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,8 +47,16 @@ import retrofit2.Retrofit;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.FilmViewHolder>
 {
+
+    private static final String TAG = "RecyclerViewAdapter";
+
+    public interface OnItemClickListener {
+        void onItemClick(MovieItem movieItem);
+    }
+
     private List<MovieItem> filmItemList;
     private Context context;
+    private OnItemClickListener onItemClickListener;
     private Calendar calendar;
     private MovieApi api;
     private int maxPages;
@@ -58,6 +70,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private String query;
     private String region;
     private String year;
+    private String genres;
     /////////////////
     private View noDataFound;
 
@@ -80,17 +93,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String query = null;
         String region = null;
         String year = null;
+        String genres = null;
     }
 
     public RecyclerViewAdapter(Context context,
                                RecyclerView recyclerView,
-                               View noDataFound) {
+                               View noDataFound,
+                               OnItemClickListener onItemClickListener) {
         this.maxPages = -1;
         this.currentPage = -1;
         this.filmItemList = new ArrayList<>();
         this.api = MovieApi.Instance.get();
         this.context = context;
         this.recyclerView = recyclerView;
+        this.onItemClickListener = onItemClickListener;
         calendar = new GregorianCalendar();
         this.filmItemList = new ArrayList<>();
         query = "";
@@ -101,6 +117,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String query = null;
         String region = null;
         String year = null;
+        String genres = null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -115,6 +132,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull FilmViewHolder holder, int position) {
         MovieItem item = filmItemList.get(position);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(10));
         Glide
                 .with(this.context)
                 .load("https://image.tmdb.org/t/p/w300/"+item.getImageUrl())
@@ -138,9 +157,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         return false;
                     }
                 })
+                .apply(requestOptions)
                 .into(holder.imageView);
         holder.title.setText(item.getTitle());
-        holder.year.setText(item.getYear());
+        if (item.getYear() == null) {
+            holder.year.setText("No year available");
+        }
+        else {
+            holder.year.setText(item.getYear());
+        }
+        holder.genres.setText(item.getStrGenres());
+        holder.bind(item, this.onItemClickListener);
     }
 
     @Override
@@ -247,6 +274,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ImageView imageView;
         TextView title;
         TextView year;
+        TextView genres;
         ChipGroup chipGroup;
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -259,6 +287,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageView.setClipToOutline(true);
         }
 
+        void bind(MovieItem movieItem, OnItemClickListener onItemClickListener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(movieItem);
+                }
+            });
+        }
 
     }
 

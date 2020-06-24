@@ -5,6 +5,7 @@ public class Constants {
     public static final String MOVIES_LIST_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w94_and_h141_bestv2";
     public static final String MOVIES_SLIDER_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w342";
     public static final String MOVIES_API_KEY = "93813d613d04f29f3f713f9a011203fb";
+    public static final String GOOGLE_IMAGE_SEARCH_KEY = "AIzaSyBR_Uc2ldDL85zh2qHLSBBghlHkMnuhrPE";
     public static final String TRENDING_MOVIES_MEDIA_TYPE = "movie";
     public static final String TRENDING_MOVIES_TIME_WINDOW = "week";
     public static final int MOVIES_BY_GENRE_PAGE = 1;

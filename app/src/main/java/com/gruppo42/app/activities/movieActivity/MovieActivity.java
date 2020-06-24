@@ -1,20 +1,37 @@
 package com.gruppo42.app.activities.movieActivity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
+import android.content.Context;
+import android.graphics.Interpolator;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.gruppo42.app.R;
 import com.gruppo42.app.activities.movieActivity.recyclers.ActorRecyclerAdapter;
 import com.gruppo42.app.activities.movieActivity.recyclers.ReccomendedRecylerAdapter;
 import com.gruppo42.app.api.models.MovieApi;
 import com.gruppo42.app.api.models.MovieDetailsDTO;
 import com.gruppo42.app.api.models.OMDBApi;
+import com.gruppo42.app.api.models.OMDBResponse;
 import com.gruppo42.app.api.models.UserApi;
 import com.gruppo42.app.api.models.UserDTO;
 import com.gruppo42.app.api.models.VideoQueryDTO;
@@ -29,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,46 +71,45 @@ public class MovieActivity extends AppCompatActivity {
     private List<String> watchlist;
     private SessionManager sessionManager;
     private YouTubePlayerView youTubePlayerView;
+    private ActorRecyclerAdapter actorRecyclerAdapter;
+    private  ReccomendedRecylerAdapter reccomendedRecylerAdapter;
     private boolean inwatchlist = false;
     private boolean infavoritelist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(this);
+        currentMovieID = this.getSharedPreferences("userSession", Context.MODE_PRIVATE).getString("current", "38286");
         movieApi = MovieApi.Instance.get();
         userApi = UserApi.Instance.get();
         omdbApi = OMDBApi.Instance.get();
         binding = ActivityMovieBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        ActorRecyclerAdapter adapter = new ActorRecyclerAdapter(this, Arrays.asList("Tom Hanks", "Leonardo DiCaprio", "Kristen Stewart","Tom Hanks", "Leonardo DiCaprio", "Kristen Stewart"));
-        ReccomendedRecylerAdapter adapter2 = new ReccomendedRecylerAdapter(this, "14");
+        setContentView(view);
+
+        actorRecyclerAdapter = new ActorRecyclerAdapter(MovieActivity.this, new ArrayList<>());
         binding.actorsRecycler.setHasFixedSize(true);
         LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(MovieActivity.this, LinearLayoutManager.HORIZONTAL, false);
         binding.actorsRecycler.setLayoutManager(layoutManager);
         binding.actorsRecycler.setNestedScrollingEnabled(true);
         binding.actorsRecycler.getRecycledViewPool().setMaxRecycledViews(0, 20);
-        binding.actorsRecycler.setAdapter(adapter);
+        binding.actorsRecycler.setAdapter(actorRecyclerAdapter);
 
+        reccomendedRecylerAdapter = new ReccomendedRecylerAdapter(MovieActivity.this, currentMovieID);
         binding.reccomendedRecycler.setHasFixedSize(true);
         LinearLayoutManager layoutManager2
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(MovieActivity.this, LinearLayoutManager.HORIZONTAL, false);
         binding.reccomendedRecycler.setLayoutManager(layoutManager2);
         binding.reccomendedRecycler.setNestedScrollingEnabled(true);
         binding.reccomendedRecycler.getRecycledViewPool().setMaxRecycledViews(0, 20);
-        binding.reccomendedRecycler.setAdapter(adapter2);
-        setContentView(view);
-        if(infavoritelist)
-            ((AnimatedVectorDrawable)binding.infavorites.getDrawable()).start();
-        else
-            binding.infavorites.setVisibility(View.GONE);
-        if(inwatchlist)
-            ((AnimatedVectorDrawable)binding.inwatchlist.getDrawable()).start();
-        else
-            binding.inwatchlist.setVisibility(View.GONE);
+        binding.reccomendedRecycler.setAdapter(reccomendedRecylerAdapter);
+
+        prepareView();
         youTubePlayerView = view.findViewById(R.id.youtube_player_view);
         getLifecycle().addObserver(youTubePlayerView);
-        movieApi.getVideos("14", Constants.MOVIES_API_KEY)
+        movieApi.getVideos(currentMovieID, Constants.MOVIES_API_KEY)
                 .enqueue(new Callback<VideoQueryDTO>() {
                     @Override
                     public void onResponse(Call<VideoQueryDTO> call, Response<VideoQueryDTO> response) {
@@ -124,25 +141,31 @@ public class MovieActivity extends AppCompatActivity {
 
     private void prepareView()
     {
-        userApi.getUserDetails(sessionManager.getUserAuthorization())
-                .enqueue(new Callback<UserDTO>() {
-                    @Override
-                    public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
-                        Log.d("DEBUG", response.toString());
-                        if(response.isSuccessful())
-                        {
-                            favorites = response.body().getFavorites().stream().map(s -> s.toString()).collect(Collectors.toList());
-                            watchlist = response.body().getWatchlist().stream().map(s -> s.toString()).collect(Collectors.toList());
-                            infavoritelist = favorites.stream().anyMatch(currentMovieID::equals);
-                            inwatchlist = watchlist.stream().anyMatch(currentMovieID::equals);
+        if(sessionManager.isLoggedIn())
+            userApi.getUserDetails(sessionManager.getUserAuthorization())
+                    .enqueue(new Callback<UserDTO>() {
+                        @Override
+                        public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                            Log.d("DEBUG", response.toString());
+                            if(response.isSuccessful())
+                            {
+                                favorites = response.body().getFavorites().stream().map(s -> s.toString()).collect(Collectors.toList());
+                                watchlist = response.body().getWatchlist().stream().map(s -> s.toString()).collect(Collectors.toList());
+                                infavoritelist = favorites.stream().anyMatch(currentMovieID::equals);
+                                inwatchlist = watchlist.stream().anyMatch(currentMovieID::equals);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<UserDTO> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<UserDTO> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+        else
+        {
+            //binding.inwatchlist.setVisibility(View.GONE);
+            //binding.infavorites.setVisibility(View.GONE);
+        }
         movieApi.getDeatils(currentMovieID, Constants.MOVIES_API_KEY)
                 .enqueue(new Callback<MovieDetailsDTO>() {
                     @Override
@@ -150,14 +173,14 @@ public class MovieActivity extends AppCompatActivity {
                         if(response.isSuccessful())
                         {
                             movieDetailsDTO = response.body();
-                            binding.runtime.setText(movieDetailsDTO.getRuntime());
+                            binding.runtime.setText(movieDetailsDTO.getRuntime()+" min");
                             if(movieDetailsDTO.getRelease_date()!=null && movieDetailsDTO.getRelease_date().length()>=4)
                             {
                                 SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
                                 try {
                                     releaseDate = new GregorianCalendar();
                                     releaseDate.setTime(parser.parse(movieDetailsDTO.getRelease_date()));
-                                    binding.year.setText(releaseDate.get(Calendar.YEAR));
+                                    //binding.year.setText(releaseDate.get(Calendar.YEAR));
                                 } catch (ParseException e) {
                                 }
                             }
@@ -170,13 +193,49 @@ public class MovieActivity extends AppCompatActivity {
                                 .fallback(R.drawable.baseline_movie_white_48dp)
                                 .error(R.drawable.baseline_movie_white_48dp)
                                 .into(binding.poster);
+                            Log.d("BACKDROP**********", movieDetailsDTO.getBackdrop_path());
+                            binding.backdrop.setVisibility(View.VISIBLE);
                             Glide
                                     .with(MovieActivity.this)
-                                    .load("https://image.tmdb.org/t/p/w300/" + movieDetailsDTO.getBackdrop_path())
+                                    .load("https://image.tmdb.org/t/p/w500/" + movieDetailsDTO.getBackdrop_path())
                                     .centerCrop()
                                     .fallback(R.drawable.baseline_movie_white_48dp)
                                     .error(R.drawable.baseline_movie_white_48dp)
                                     .into(binding.backdrop);
+                            Log.d("OMDB**********", "************************");
+                            omdbApi.getMovieDetails(Constants.OMOVIE_API_KEY, movieDetailsDTO.getImdb_id())
+                                    .enqueue(new Callback<OMDBResponse>() {
+                                        @Override
+                                        public void onResponse(Call<OMDBResponse> call, Response<OMDBResponse> response) {
+                                            Log.d("DEBUG*********************************************", response.toString());
+                                            if(response.isSuccessful())
+                                            {
+                                                OMDBResponse om = response.body();
+                                                Log.d("DEBUG*********************************************", response.toString());
+                                                actorRecyclerAdapter.setActors(Arrays.asList(om.getActors().split(", ")));
+                                                actorRecyclerAdapter.notifyDataSetChanged();
+                                                binding.country.setText(om.getCountry());
+                                                binding.year.setText(om.getYear());
+                                                try {
+                                                    animateValue(binding.metascore, (int)(Float.parseFloat(om.getMetascore())*10), null, 3000);
+                                                } catch (Exception e)
+                                                {
+                                                    binding.metascore.setText("-");
+                                                }
+                                                try {
+                                                    animateValue(binding.userscore, (int)(Float.parseFloat(om.getImdbRating())*10), null, 3000);
+                                                } catch (Exception e)
+                                                {
+                                                    binding.userscore.setText("-");
+                                                }
+                                            }
+                                        }
+                                        @Override
+                                        public void onFailure(Call<OMDBResponse> call, Throwable t) {
+                                            Log.d("OMDB FAIL**********", t.toString());
+                                        }
+                                    });
+                            Log.d("OMDB END**********", "************************");
                         }
                     }
                     @Override
@@ -184,8 +243,24 @@ public class MovieActivity extends AppCompatActivity {
 
                     }
                 });
+    }
 
-        omdbApi.getMovieDetails(movieDetailsDTO.getImdb_id(), Constants.)
+    private void animateValue(final TextView view, int toVal, TimeInterpolator interpolator, int duration)
+    {
+        if(interpolator==null)
+            interpolator = new AccelerateDecelerateInterpolator();
+        ValueAnimator animator = new ValueAnimator();
+        animator.setObjectValues(0, toVal);
+        animator.setInterpolator(interpolator);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                view.setText(String.valueOf(animation.getAnimatedValue()));
+            }
+        });
+        if(duration<=0)
+            duration=5000;
+        animator.setDuration(duration); // here you set the duration of the anim
+        animator.start();
     }
 
 }

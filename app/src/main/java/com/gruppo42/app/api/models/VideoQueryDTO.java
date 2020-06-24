@@ -32,6 +32,16 @@ public class VideoQueryDTO {
         String site;
         @SerializedName("key")
         String key;
+        @SerializedName("type")
+        String type;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public String getSite() {
             return site;
@@ -51,7 +61,7 @@ public class VideoQueryDTO {
 
         public boolean hasYoutube()
         {
-            return site.equals("YouTube");
+            return site.equals("YouTube") && type.equalsIgnoreCase("Trailer");
         }
     }
 }

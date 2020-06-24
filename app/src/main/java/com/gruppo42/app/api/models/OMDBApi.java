@@ -1,6 +1,7 @@
 package com.gruppo42.app.api.models;
 
 
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -10,11 +11,11 @@ import retrofit2.http.Query;
 
 public interface OMDBApi {
 
-    static String ENDPOINT = "http://www.omdbapi.com/";
+    static String ENDPOINT = "https://www.omdbapi.com";
 
-    @GET
-    Response<OMDBResponse> getMovieDetails(@Query("apikey") String api_key,
-                                            @Query("i") String movieId);
+    @GET("/")
+    Call<OMDBResponse> getMovieDetails(@Query("apikey") String api_key,
+                                       @Query("i") String movieId);
 
 
     public static class Instance {

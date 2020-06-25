@@ -165,6 +165,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 })
                 .apply(requestOptions)
                 .into(holder.imageView);
+        holder.id = filmItemList.get(position).getId()+"";
         holder.title.setText(item.getTitle());
         if (item.getYear() == null) {
             holder.year.setText("No year available");
@@ -172,7 +173,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         else {
             holder.year.setText(item.getYear());
         }
-        holder.genres.setText(item.getStrGenres());
+        //holder.genres.setText(item.getStrGenres());
     }
 
     @Override
@@ -283,7 +284,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView genres;
         ChipGroup chipGroup;
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         public FilmViewHolder(@NonNull View itemView, String id) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);

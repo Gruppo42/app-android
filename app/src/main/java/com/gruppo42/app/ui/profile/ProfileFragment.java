@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Base64;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,7 +86,13 @@ public class ProfileFragment extends Fragment {
         ViewPager2 pager = root.findViewById(R.id.pager);
         this.favList = new ArrayList<>();
         this.watchList = new ArrayList<>();
-        adapter = new PagerAdapter(this, favList, watchList);
+        adapter = new PagerAdapter(this, favList, watchList, new ChangeListener() {
+            @Override
+            public void onChange(Object object) {
+                profileViewModel.fetchData();
+                sessionManager.needRefresh(false);
+            }
+        });
         pager.setAdapter(adapter);
         TabLayout tabLayout = root.findViewById(R.id.tab_layout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -250,12 +257,15 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
         profileViewModel.getFavorites().observeForever(l -> {
+            Log.d("Debug", "Refreshing pager!");
             this.adapter.setFavList(l);
             this.favlistCount.setText(new String(l.size()+""));
         });
 
         profileViewModel.getWatchlist().observeForever(l -> {
+            Log.d("Debug", "Refreshing pager!");
             this.adapter.setWatchlist(l);
             this.watchlistCount.setText(new String(l.size()+""));
         });

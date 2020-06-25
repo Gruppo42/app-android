@@ -1,8 +1,13 @@
 package com.gruppo42.app.ui.home;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.gruppo42.app.R;
+import com.gruppo42.app.activities.movieActivity.MovieActivity;
 import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.ResultDTO;
@@ -40,12 +46,12 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private List<ResultDTO> resultDTOList;
     private LayoutInflater layoutInflater;
-    private OnItemClickListener onItemClickListener;
+    private Context context;
 
-    public HomeRecyclerViewAdapter(Context context, List<ResultDTO> resultDTOList, OnItemClickListener onItemClickListener) {
+    public HomeRecyclerViewAdapter(Context context, List<ResultDTO> resultDTOList, HomeRecyclerViewAdapter.OnItemClickListener l) {
+        this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.resultDTOList = resultDTOList;
-        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -65,7 +71,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MoviesViewHolder) {
-            ((MoviesViewHolder) holder).bind(resultDTOList.get(position), this.onItemClickListener);
+            ((MoviesViewHolder) holder).id = resultDTOList.get(position).getId()+"";
+            ((MoviesViewHolder) holder).bind(resultDTOList.get(position), null);
         } else if (holder instanceof LoadingMoviesViewHolder) {
             ((LoadingMoviesViewHolder) holder).progressBarLoadingMovies.setIndeterminate(true);
         }
@@ -95,8 +102,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    static class MoviesViewHolder extends RecyclerView.ViewHolder {
+    public class MoviesViewHolder extends RecyclerView.ViewHolder {
 
+        String id;
         ImageView imageViewMovieImage;
 
         MoviesViewHolder(View view) {
@@ -125,8 +133,15 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MovieItem movieItem = new MovieItem(resultDTO);
-                    onItemClickListener.onItemClick(movieItem);
+                    Intent intent = new Intent(context, MovieActivity.class);
+                    Pair[] pairs = new Pair[1];
+                    pairs[0] = new Pair<View, String>(imageViewMovieImage, "poster");
+                    ActivityOptions options = ActivityOptions
+                            .makeSceneTransitionAnimation((Activity)context, pairs);
+                    Bundle b = new Bundle();
+                    b.putCharSequence("movie", id); //Your id
+                    intent.putExtras(b); //Put your id to your next Intent
+                    context.startActivity(intent, options.toBundle());
                 }
             });
         }

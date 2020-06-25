@@ -25,6 +25,8 @@ import com.gruppo42.app.R;
 import com.gruppo42.app.activities.movieActivity.MovieActivity;
 import com.gruppo42.app.api.models.MovieApi;
 import com.gruppo42.app.api.models.MovieDetailsDTO;
+import com.gruppo42.app.session.SessionManager;
+import com.gruppo42.app.ui.dialogs.ChangeListener;
 import com.gruppo42.app.utils.Constants;
 
 import java.util.ArrayList;
@@ -41,10 +43,14 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     private LayoutInflater mInflater;
     private MovieApi api;
     private Context context;
+    private SessionManager sessionManager;
+    private ChangeListener listener;
 
-    public MovieGridAdapter(Context context, List<String> movieIDs)
+    public MovieGridAdapter(Context context, List<String> movieIDs, ChangeListener listener)
     {
         super();
+        this.sessionManager = new SessionManager(context);
+        this.listener = listener;
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.movieIDs = movieIDs;
@@ -121,6 +127,10 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
             b.putCharSequence("movie", id); //Your id
             intent.putExtras(b); //Put your id to your next Intent
             context.startActivity(intent, options.toBundle());
+            if(sessionManager.needToRefresh()) {
+                sessionManager.needRefresh(false);
+                listener.onChange(null);
+            }
         }
     }
 

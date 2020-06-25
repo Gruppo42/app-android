@@ -214,6 +214,7 @@
                         android:textColor="@color/design_default_color_background" />
 
                     <TextView
+                        android:id="@+id/overviewTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Overview"

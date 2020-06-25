@@ -84,8 +84,8 @@ public class ActorRecyclerAdapter extends RecyclerView.Adapter<ActorRecyclerAdap
                                                 .with(context)
                                                 .load("https://image.tmdb.org/t/p/w300/"+actors.get(0).getProfile_path())
                                                 .circleCrop()
-                                                .fallback(R.drawable.baseline_movie_white_48dp)
-                                                .error(R.drawable.baseline_movie_white_48dp)
+                                                .fallback(R.drawable.no_image_actor)
+                                                .error(R.drawable.no_image_actor)
                                                 .transition(GenericTransitionOptions.with(R.transition.zoomin))
                                                 .into(holder.image);
                                         holder.name.setText(actor);

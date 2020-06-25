@@ -4,36 +4,29 @@ import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.navigation.Navigator;
-import androidx.navigation.fragment.FragmentNavigator;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gruppo42.app.R;
 import com.gruppo42.app.api.models.MovieItem;
-import com.gruppo42.app.api.models.QueryResultDTO;
 import com.gruppo42.app.api.models.Resource;
 import com.gruppo42.app.api.models.ResultDTO;
 import com.gruppo42.app.databinding.FragmentHomeMovieListBinding;
-import com.gruppo42.app.ui.moviedetail.MovieDetailFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -79,38 +72,40 @@ public class MoviesByDateOrGenreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        homeMoviesViewModel = new HomeMoviesViewModel();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        binding.moviesRecyclerView.setLayoutManager(layoutManager);
-
-        homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(getActivity(), getMovieByDateOrGenreList(with_genres), new HomeRecyclerViewAdapter.OnItemClickListener() {
+        new Handler().post(new Runnable() {
             @Override
-            public void onItemClick(MovieItem movieItem) {
-                HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movieItem);
-                Navigation.findNavController(view).navigate(action);
-            }
-        });
-        binding.moviesRecyclerView.setNestedScrollingEnabled(true);
-        binding.moviesRecyclerView.setAdapter(homeRecyclerViewAdapter);
-        //recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 10); DA CHIAMARE PER OGNI RECYCLER VIEW (per ottimizzare)
-        binding.moviesRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 20);
-        binding.moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            public void run() {
+                homeMoviesViewModel = new HomeMoviesViewModel();
 
-            @SuppressLint("LongLogTag")
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                binding.moviesRecyclerView.setLayoutManager(layoutManager);
 
-                super.onScrolled(recyclerView, dx, dy);
+                homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(getActivity(), getMovieByDateOrGenreList(with_genres), new HomeRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(MovieItem movieItem) {
+                        HomeFragmentDirections.ShowMovieDetailAction action = HomeFragmentDirections.showMovieDetailAction(movieItem);
+                        Navigation.findNavController(view).navigate(action);
+                    }
+                });
+                binding.moviesRecyclerView.setNestedScrollingEnabled(true);
+                binding.moviesRecyclerView.setAdapter(homeRecyclerViewAdapter);
+                binding.moviesRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 20);
+                binding.moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-                totalItemCount = layoutManager.getItemCount();
-                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-                visibleItemCount = layoutManager.getChildCount();
+                    @SuppressLint("LongLogTag")
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 
-                if (totalItemCount == visibleItemCount || (
-                        totalItemCount <= (lastVisibleItem + threshold) && dx > 0 && !homeMoviesViewModel.isLoading()) &&
-                        homeMoviesViewModel.getMoviesLiveData().getValue() != null &&
-                        homeMoviesViewModel.getCurrentResults() != homeMoviesViewModel.getMoviesLiveData().getValue().getTotalResults()
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        totalItemCount = layoutManager.getItemCount();
+                        lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                        visibleItemCount = layoutManager.getChildCount();
+
+                        if (totalItemCount == visibleItemCount || (
+                                totalItemCount <= (lastVisibleItem + threshold) && dx > 0 && !homeMoviesViewModel.isLoading()) &&
+                                homeMoviesViewModel.getMoviesLiveData().getValue() != null &&
+                                homeMoviesViewModel.getCurrentResults() != homeMoviesViewModel.getMoviesLiveData().getValue().getTotalResults()
                         ) {
                             Resource<List<ResultDTO>> movieListResource = new Resource<>();
 
@@ -135,41 +130,47 @@ public class MoviesByDateOrGenreFragment extends Fragment {
 
                                 homeMoviesViewModel.getMoreMoviesByDateOrGenreResource(today, with_genres);
                             }
-                }
+                        }
+                    }
+                });
             }
         });
 
-        final Observer<Resource<List<ResultDTO>>> observer = new Observer<Resource<List<ResultDTO>>>() {
-            @SuppressLint("LongLogTag")
+
+        new Handler().post(new Runnable() {
             @Override
-            public void onChanged(Resource<List<ResultDTO>> moviesByDateOrGenreResource) {
+            public void run() {
+                final Observer<Resource<List<ResultDTO>>> observer = new Observer<Resource<List<ResultDTO>>>() {
+                    @SuppressLint("LongLogTag")
+                    @Override
+                    public void onChanged(Resource<List<ResultDTO>> moviesByDateOrGenreResource) {
+                        homeRecyclerViewAdapter.setData(moviesByDateOrGenreResource.getData());
 
-                homeRecyclerViewAdapter.setData(moviesByDateOrGenreResource.getData());
+                        if(!moviesByDateOrGenreResource.isLoading()) {
+                            homeMoviesViewModel.setLoading(false);
+                            if (moviesByDateOrGenreResource.getData() != null) {
+                                homeMoviesViewModel.setCurrentResults(moviesByDateOrGenreResource.getData().size());
+                            }
+                        }
 
-                if(!moviesByDateOrGenreResource.isLoading()) {
-                    homeMoviesViewModel.setLoading(false);
-                    if (moviesByDateOrGenreResource.getData() != null) {
-                        homeMoviesViewModel.setCurrentResults(moviesByDateOrGenreResource.getData().size());
-                    }
-                }
+                        if (moviesByDateOrGenreResource.getData() != null) {
+                            Log.d(TAG, "Success - Total results: " + moviesByDateOrGenreResource.getTotalResults() + " Status code: " + moviesByDateOrGenreResource.getStatusCode() + "Status message: " + moviesByDateOrGenreResource.getStatusMessage());
 
-                if (moviesByDateOrGenreResource.getData() != null) {
-                    Log.d(TAG, "Success - Total results: " + moviesByDateOrGenreResource.getTotalResults() + " Status code: " + moviesByDateOrGenreResource.getStatusCode() + "Status message: " + moviesByDateOrGenreResource.getStatusMessage());
-
-                    for (int i = 0; i < moviesByDateOrGenreResource.getData().size(); i++) {
-                        if (moviesByDateOrGenreResource.getData().get(i) != null && moviesByDateOrGenreResource.getData().get(i).getPoster_path() == null) {
-                            Log.d(TAG, "Action ResultDTO: " + moviesByDateOrGenreResource.getData().get(i).getPoster_path());
-                            moviesByDateOrGenreResource.getData().remove(i);
+                            for (int i = 0; i < moviesByDateOrGenreResource.getData().size(); i++) {
+                                if (moviesByDateOrGenreResource.getData().get(i) != null && moviesByDateOrGenreResource.getData().get(i).getPoster_path() == null) {
+                                    Log.d(TAG, "Action ResultDTO: " + moviesByDateOrGenreResource.getData().get(i).getPoster_path());
+                                    moviesByDateOrGenreResource.getData().remove(i);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error - Status code: " + moviesByDateOrGenreResource.getStatusCode() + " Status message: " + moviesByDateOrGenreResource.getStatusMessage());
                         }
                     }
-                } else {
-                    Log.d(TAG, "Error - Status code: " + moviesByDateOrGenreResource.getStatusCode() + " Status message: " + moviesByDateOrGenreResource.getStatusMessage());
-                }
+                };
+                LiveData<Resource<List<ResultDTO>>> liveData = homeMoviesViewModel.getMoviesByDateOrGenreResource(today, with_genres);
+                liveData.observe(getViewLifecycleOwner(), observer);
             }
-        };
-
-        LiveData<Resource<List<ResultDTO>>> liveData = homeMoviesViewModel.getMoviesByDateOrGenreResource(today, with_genres);
-        liveData.observe(getViewLifecycleOwner(), observer);
+        });
     }
 
     private List<ResultDTO> getMovieByDateOrGenreList(String with_genres) {

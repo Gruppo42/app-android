@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gruppo42.app.R;
+import com.gruppo42.app.ui.dialogs.ChangeListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,13 +26,15 @@ public class MovieGridFragment extends Fragment {
     private List<String> movieIDS;
     private MovieGridAdapter adapter;
     private View nothingFound;
+    private ChangeListener listener;
 
     public static MovieGridFragment newInstance() {
         return new MovieGridFragment();
     }
 
-    public MovieGridFragment(List<String> movieIDS) {
+    public MovieGridFragment(List<String> movieIDS, ChangeListener listener) {
         this.movieIDS = movieIDS;
+        this.listener = listener;
         Log.d("MovieGrid", "Created with " + movieIDS.size() + " elements");
     }
 
@@ -46,9 +49,9 @@ public class MovieGridFragment extends Fragment {
         nothingFound = root.findViewById(R.id.textViewNothing);
         RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recyclerGrid);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4, RecyclerView.VERTICAL, false));
-        this.adapter = new MovieGridAdapter(this.getContext(), this.movieIDS);
+        this.adapter = new MovieGridAdapter(this.getContext(), this.movieIDS, listener);
         recyclerView.setAdapter(adapter);
-        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 20);
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 1);
         int spanCount = 4; // 3 columns
         int spacing = 5; // 50px
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.gruppo42.app.ui.dialogs.ChangeListener;
 import com.gruppo42.app.ui.profile.filmrecyclergrid.MovieGridFragment;
 
 import java.util.List;
@@ -16,9 +17,11 @@ public class PagerAdapter extends FragmentStateAdapter {
     private List<String> watchlist;
     private MovieGridFragment favFragment;
     private MovieGridFragment watchlistFragment;
+    private ChangeListener listener;
 
-    public PagerAdapter(@NonNull Fragment fragment, List<String> favoritesList, List<String> watchList) {
+    public PagerAdapter(@NonNull Fragment fragment, List<String> favoritesList, List<String> watchList, ChangeListener listener) {
         super(fragment);
+        this.listener = listener;
         this.favList = favoritesList;
         this.watchlist = watchList;
     }
@@ -28,11 +31,11 @@ public class PagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         Log.d("CREATE FRAAG*********", position+"");
         if(position==0) {
-            favFragment = new MovieGridFragment(this.favList);
+            favFragment = new MovieGridFragment(this.favList, listener);
             return favFragment;
         }
         else {
-            watchlistFragment = new MovieGridFragment(this.watchlist);
+            watchlistFragment = new MovieGridFragment(this.watchlist, listener);
             return watchlistFragment;
         }
     }

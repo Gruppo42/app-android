@@ -7,26 +7,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Interpolator;
-import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.gruppo42.app.R;
 import com.gruppo42.app.activities.movieActivity.recyclers.ActorRecyclerAdapter;
 import com.gruppo42.app.activities.movieActivity.recyclers.ReccomendedRecylerAdapter;
@@ -48,15 +37,12 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -218,6 +204,7 @@ public class MovieActivity extends AppCompatActivity {
                                                     Log.d("REMOVED", "REMOVED MOVIE FROM WATCHLIST");
                                                     inwatchlist = false;
                                                     binding.fabwatch.setImageDrawable(getDrawable(R.drawable.ic_baseline_tv_24));
+                                                    sessionManager.needRefresh(true);
                                                 }
                                             }
                                             @Override
@@ -234,6 +221,7 @@ public class MovieActivity extends AppCompatActivity {
                                                 if (response.isSuccessful()) {
                                                     Log.d("ADDED", "ADDED MOVIE TO WATCHLIST");
                                                     inwatchlist = true;
+                                                    sessionManager.needRefresh(true);
                                                     binding.fabwatch.setImageDrawable(getDrawable(R.drawable.ic_baseline_tv_off_24));
                                                 }
                                             }
@@ -289,6 +277,7 @@ public class MovieActivity extends AppCompatActivity {
                                                     Log.d("REMOVED", "REMOVED MOVIE FROM FAVORITES");
                                                     infavoritelist = false;
                                                     binding.fabfav.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_border_24));
+                                                    sessionManager.needRefresh(true);
                                                 }
                                             }
                                             @Override
@@ -311,6 +300,7 @@ public class MovieActivity extends AppCompatActivity {
                                                     Log.d("ADDED", "ADDED MOVIE TO FAVORITES");
                                                     infavoritelist = true;
                                                     binding.fabfav.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_24));
+                                                    sessionManager.needRefresh(true);
                                                 }
                                             }
                                             @Override
@@ -369,10 +359,10 @@ public class MovieActivity extends AppCompatActivity {
                                     }
 
 
-
-
-                                    if(movieDetailsDTO.getOverview()==null || movieDetailsDTO.getOverview().length()==0)
+                                    if(movieDetailsDTO.getOverview()==null || movieDetailsDTO.getOverview().length()==0) {
                                         binding.overview.setVisibility(View.GONE);
+                                        binding.overviewTitle.setVisibility(View.GONE);
+                                    }
                                     binding.overview.setText(movieDetailsDTO.getOverview());
                                     Glide
                                             .with(MovieActivity.this)
@@ -400,7 +390,12 @@ public class MovieActivity extends AppCompatActivity {
                                                         OMDBResponse om = response.body();
                                                         SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
                                                         Log.d("DEBUG*********************************************", response.toString());
-                                                        actorRecyclerAdapter.setActors(Arrays.asList(om.getActors().split(", ")));
+                                                        if(om.getActors()!=null)
+                                                            actorRecyclerAdapter.setActors(Arrays.asList(om.getActors().split(", ")));
+                                                        else {
+                                                            actorRecyclerAdapter.setActors(new ArrayList<>());
+                                                            binding.actorTitle.setVisibility(View.GONE);
+                                                        }
                                                         actorRecyclerAdapter.notifyDataSetChanged();
                                                         binding.country.setText(om.getCountry());
                                                         binding.year.setText(om.getYear());

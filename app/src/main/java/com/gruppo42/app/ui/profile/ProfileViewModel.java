@@ -25,6 +25,7 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<String> email;
     private MutableLiveData<List<String>> favorites;
     private MutableLiveData<List<String>> watchlist;
+    private String token;
     private UserApi api;
 
     public ProfileViewModel(){
@@ -33,6 +34,7 @@ public class ProfileViewModel extends ViewModel {
 
     public ProfileViewModel(String token) {
         super();
+        this.token = token;
         name = new MutableLiveData<>();
         profileImage = new MutableLiveData<>();
         surname = new MutableLiveData<>();
@@ -41,25 +43,7 @@ public class ProfileViewModel extends ViewModel {
         favorites = new MutableLiveData<>();
         watchlist = new MutableLiveData<>();
         this.api = UserApi.Instance.get();
-        //Prendi dati da api dando il token
-        api.getUserDetails(token).enqueue(new Callback<UserDTO>() {
-            @Override
-            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
-                UserDTO user = response.body();
-                if(response.isSuccessful()) {
-                    name.setValue(user.getName());
-                    profileImage.setValue(user.getImage());
-                    username.setValue(user.getUsername());
-                    email.setValue(user.getEmail());
-                    favorites.setValue(user.getFavorites().stream().map(v -> v.toString()).collect(Collectors.toList()));
-                    watchlist.setValue(user.getWatchlist().stream().map(v -> v.toString()).collect(Collectors.toList()));
-                }
-            }
-            @Override
-            public void onFailure(Call<UserDTO> call, Throwable t) {
-                Log.d("Failure", t.toString());
-            }
-        });
+        fetchData();
     }
 
     public MutableLiveData<String> getName() {
@@ -117,6 +101,28 @@ public class ProfileViewModel extends ViewModel {
 
     public void setWatchlist(MutableLiveData<List<String>> watchlist) {
         this.watchlist = watchlist;
+    }
+
+    public void fetchData()
+    {
+        api.getUserDetails(token).enqueue(new Callback<UserDTO>() {
+            @Override
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                UserDTO user = response.body();
+                if(response.isSuccessful()) {
+                    name.setValue(user.getName());
+                    profileImage.setValue(user.getImage());
+                    username.setValue(user.getUsername());
+                    email.setValue(user.getEmail());
+                    favorites.setValue(user.getFavorites().stream().map(v -> v.toString()).collect(Collectors.toList()));
+                    watchlist.setValue(user.getWatchlist().stream().map(v -> v.toString()).collect(Collectors.toList()));
+                }
+            }
+            @Override
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+                Log.d("Failure", t.toString());
+            }
+        });
     }
 
 

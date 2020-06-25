@@ -1,6 +1,7 @@
 package com.gruppo42.app.ui.home;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,27 +44,32 @@ public class HomeFragment extends Fragment {
         String strTomorrow = simpleDateFormat.format(tomorrow);
         Log.d(TAG, "insertMoviesFragment: " + strTomorrow);
 
-        fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayoutTrending, TrendingMoviesFragment.newInstance());
-        fragmentTransaction.replace(R.id.frameLayoutUpcoming, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, strTomorrow, null));
-        fragmentTransaction.replace(R.id.frameLayoutAction, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.ACTION));
-        fragmentTransaction.replace(R.id.frameLayoutAdventure, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.ADVENTURE));
-        fragmentTransaction.replace(R.id.frameLayoutAnimation, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.ANIMATION));
-        fragmentTransaction.replace(R.id.frameLayoutComedy, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.COMEDY));
-        fragmentTransaction.replace(R.id.frameLayoutCrime, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.CRIME));
-        fragmentTransaction.replace(R.id.frameLayoutDocumentary, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.DOCUMENTARY));
-        fragmentTransaction.replace(R.id.frameLayoutDrama, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.DRAMA));
-        fragmentTransaction.replace(R.id.frameLayoutFamily, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.FAMILY));
-        fragmentTransaction.replace(R.id.frameLayoutFantasy, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.FANTASY));
-        fragmentTransaction.replace(R.id.frameLayoutHistory, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.HISTORY));
-        fragmentTransaction.replace(R.id.frameLayoutHorror, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.HORROR));
-        fragmentTransaction.replace(R.id.frameLayoutMusic, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.MUSIC));
-        fragmentTransaction.replace(R.id.frameLayoutMystery, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.MYSTERY));
-        fragmentTransaction.replace(R.id.frameLayoutRomance, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.ROMANCE));
-        fragmentTransaction.replace(R.id.frameLayoutScienceFiction, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.SCIENCE_FICTION));
-        fragmentTransaction.replace(R.id.frameLayoutThriller, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.THRILLER));
-        fragmentTransaction.replace(R.id.frameLayoutWar, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.WAR));
-        fragmentTransaction.replace(R.id.frameLayoutWestern, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.WESTERN));
-        fragmentTransaction.commit();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                fragmentTransaction = getChildFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayoutTrending, TrendingMoviesFragment.newInstance());
+                fragmentTransaction.replace(R.id.frameLayoutUpcoming, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, strTomorrow, null));
+                fragmentTransaction.replace(R.id.frameLayoutAction, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.ACTION));
+                fragmentTransaction.replace(R.id.frameLayoutAdventure, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.ADVENTURE));
+                fragmentTransaction.replace(R.id.frameLayoutAnimation, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.ANIMATION));
+                fragmentTransaction.replace(R.id.frameLayoutComedy, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.COMEDY));
+                fragmentTransaction.replace(R.id.frameLayoutCrime, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.CRIME));
+                fragmentTransaction.replace(R.id.frameLayoutDocumentary, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.DOCUMENTARY));
+                fragmentTransaction.replace(R.id.frameLayoutDrama, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.DRAMA));
+                fragmentTransaction.replace(R.id.frameLayoutFamily, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.FAMILY));
+                fragmentTransaction.replace(R.id.frameLayoutFantasy, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.FANTASY));
+                fragmentTransaction.replace(R.id.frameLayoutHistory, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.HISTORY));
+                fragmentTransaction.replace(R.id.frameLayoutHorror, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.HORROR));
+                fragmentTransaction.replace(R.id.frameLayoutMusic, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.MUSIC));
+                fragmentTransaction.replace(R.id.frameLayoutMystery, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.MYSTERY));
+                fragmentTransaction.replace(R.id.frameLayoutRomance, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.ROMANCE));
+                fragmentTransaction.replace(R.id.frameLayoutScienceFiction, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.SCIENCE_FICTION));
+                fragmentTransaction.replace(R.id.frameLayoutThriller, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.THRILLER));
+                fragmentTransaction.replace(R.id.frameLayoutWar, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.WAR));
+                fragmentTransaction.replace(R.id.frameLayoutWestern, MoviesByDateOrGenreFragment.newInstance(Constants.MOVIES_BY_GENRE_PAGE, null, Constants.WESTERN));
+                fragmentTransaction.commit();
+            }
+        });
     }
 }

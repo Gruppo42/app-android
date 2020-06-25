@@ -27,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration;
         if(sessionManager.isLoggedIn()) {
-            navView.getMenu().getItem(2).setEnabled(false);
+            navView.getMenu().getItem(2).setEnabled(true);
             appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.homeFragment, R.id.searchFragment, R.id.userFragment)
                     .build();
         }
         else {
-            navView.getMenu().getItem(2).setEnabled(true);
+            navView.getMenu().getItem(2).setEnabled(false);
             appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.homeFragment, R.id.searchFragment)
                     .build();

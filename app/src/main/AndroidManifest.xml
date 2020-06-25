@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SignUpSuccess">
+        <activity android:name=".activities.movieActivity.MovieActivity">
         </activity>
+        <activity android:name=".activities.SignUpSuccess"></activity>
         <activity android:name=".activities.ForgetPassword" />
         <activity android:name=".activities.Signup" />
         <activity android:name=".activities.Login" />

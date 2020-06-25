@@ -1,9 +1,14 @@
 package com.gruppo42.app.ui.search;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +30,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.gruppo42.app.R;
+import com.gruppo42.app.activities.movieActivity.MovieActivity;
 import com.gruppo42.app.api.models.MovieApi;
 import com.gruppo42.app.api.models.MovieItem;
 import com.gruppo42.app.api.models.QueryResultDTO;
@@ -126,7 +132,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public FilmViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.alt_list_layout, parent, false);
-        return new FilmViewHolder(v);
+        return new FilmViewHolder(v, null);
     }
 
     @Override
@@ -167,7 +173,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.year.setText(item.getYear());
         }
         holder.genres.setText(item.getStrGenres());
-        holder.bind(item, this.onItemClickListener);
     }
 
     @Override
@@ -268,8 +273,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.listener = listener;
     }
 
-    public class FilmViewHolder extends RecyclerView.ViewHolder
+    public class FilmViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
+        String id;
         ShimmerFrameLayout shimmerFrameLayout;
         ImageView imageView;
         TextView title;
@@ -278,24 +284,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ChipGroup chipGroup;
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        public FilmViewHolder(@NonNull View itemView) {
+        public FilmViewHolder(@NonNull View itemView, String id) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             title = itemView.findViewById(R.id.movieTitle);
             year = itemView.findViewById(R.id.movieYear);
             shimmerFrameLayout = itemView.findViewById(R.id.shimmer_view_container);
             imageView.setClipToOutline(true);
+            itemView.setOnClickListener(this);
         }
 
-        void bind(MovieItem movieItem, OnItemClickListener onItemClickListener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClickListener.onItemClick(movieItem);
-                }
-            });
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, MovieActivity.class);
+            Pair[] pairs = new Pair[1];
+            pairs[0] = new Pair<View, String>(imageView, "poster");
+            ActivityOptions options = ActivityOptions
+                    .makeSceneTransitionAnimation((Activity)context, pairs);
+            Bundle b = new Bundle();
+            b.putCharSequence("movie", id); //Your id
+            intent.putExtras(b); //Put your id to your next Intent
+            context.startActivity(intent, options.toBundle());
         }
-
     }
 
     public List<MovieItem> getFilmItemList() {

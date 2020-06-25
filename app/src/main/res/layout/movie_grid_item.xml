@@ -8,6 +8,7 @@
     <com.gruppo42.app.ui.profile.filmrecyclergrid.FilmImageView
         android:id="@+id/picture"
         android:layout_width="wrap_content"
+        android:transitionName="poster"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

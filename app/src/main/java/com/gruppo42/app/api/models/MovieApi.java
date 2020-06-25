@@ -38,6 +38,17 @@ public interface MovieApi {
     Call<MovieDetailsDTO> getDeatils(@Path("movie_id") String movieid,
                                      @Query("api_key") String api_key);
 
+    @GET("3/search/person")
+    Call<MovieQueryResultDTO> getActorDetails(@Query("api_key") String api_key,
+                                              @Query("query") String query);
+
+    @GET("3/movie/{movie_id}/recommendations")
+    Call<MovieReccQueryResultDTO> getRecommendations(@Path("movie_id") String movieid,
+                                                  @Query("api_key") String api_key);
+
+    @GET("3/movie/{movie_id}/videos")
+    Call<VideoQueryDTO> getVideos(@Path("movie_id") String movieid,
+                                  @Query("api_key") String api_key);
 
     class Instance {
 

@@ -7,8 +7,10 @@ import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
 import com.gruppo42.app.utils.HashMapGenres;
+import com.gruppo42.app.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -34,6 +36,10 @@ public class MovieItem implements Parcelable
             this.year = result.release_date.substring(0, 4);
         this.language = result.getOriginal_language();
         this.genre = new ArrayList<>();
+        if(result.genre_ids!=null && result.genre_ids.length!=0)
+            for(int i = 0; i < 3 && i < result.genre_ids.length; i++)
+                if(Utils.getGenre(result.genre_ids[i])!=null)
+                    this.genre.add(Utils.getGenre(result.genre_ids[i]));
         this.genre_ids = result.getGenre_ids();
         if(result.getPoster_path() != null) {
             this.imageUrl = result.getPoster_path();//.substring(1);

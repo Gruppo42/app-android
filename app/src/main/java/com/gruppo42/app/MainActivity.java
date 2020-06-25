@@ -26,14 +26,18 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration;
-        if(sessionManager.isLoggedIn())
+        if(sessionManager.isLoggedIn()) {
+            navView.getMenu().getItem(2).setEnabled(false);
             appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.homeFragment, R.id.searchFragment, R.id.userFragment)
-                .build();
-        else
+                    R.id.homeFragment, R.id.searchFragment, R.id.userFragment)
+                    .build();
+        }
+        else {
+            navView.getMenu().getItem(2).setEnabled(true);
             appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.homeFragment, R.id.searchFragment)
                     .build();
+        }
         NavController navController = ((NavHostFragment)this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)).getNavController();
         NavigationUI.setupWithNavController(navView, navController);
 

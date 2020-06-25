@@ -29,6 +29,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.chip.Chip;
 import com.gruppo42.app.R;
 import com.gruppo42.app.activities.movieActivity.MovieActivity;
 import com.gruppo42.app.api.models.MovieApi;
@@ -167,6 +168,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .into(holder.imageView);
         holder.id = filmItemList.get(position).getId()+"";
         holder.title.setText(item.getTitle());
+        if(filmItemList.get(position).getGenre()!=null)
+        {
+            switch(filmItemList.get(position).getGenre().size())
+            {
+                case 3:
+                {
+                    holder.chip3.setText(filmItemList.get(position).getGenre().get(2));
+                    holder.chip3.setVisibility(View.VISIBLE);
+                }
+                case 2:
+                {
+                    holder.chip2.setText(filmItemList.get(position).getGenre().get(1));
+                    holder.chip2.setVisibility(View.VISIBLE);
+                }
+                case 1:
+                {
+                    holder.chip.setText(filmItemList.get(position).getGenre().get(0));
+                    holder.chip.setVisibility(View.VISIBLE);
+                    break;
+                }
+            }
+        }
         if (item.getYear() == null) {
             holder.year.setText("No year available");
         }
@@ -281,6 +304,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ImageView imageView;
         TextView title;
         TextView year;
+        Chip chip;
+        Chip chip2;
+        Chip chip3;
         TextView genres;
         ChipGroup chipGroup;
 
@@ -290,6 +316,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             title = itemView.findViewById(R.id.movieTitle);
             year = itemView.findViewById(R.id.movieYear);
             shimmerFrameLayout = itemView.findViewById(R.id.shimmer_view_container);
+            chip = itemView.findViewById(R.id.chip2);;
+            chip2 = itemView.findViewById(R.id.chip3);
+            chip3 = itemView.findViewById(R.id.chip4);
             imageView.setClipToOutline(true);
             itemView.setOnClickListener(this);
         }

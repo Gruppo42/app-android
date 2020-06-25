@@ -30,6 +30,8 @@ import com.gruppo42.app.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,8 +65,12 @@ public class ReccomendedRecylerAdapter extends RecyclerView.Adapter<ReccomendedR
                                         reccomendedMovies = new ArrayList<>();
                                         return;
                                     } else {
-                                        reccomendedMovies = response.body().getResults();
-                                        notifyDataSetChanged();
+                                        reccomendedMovies = response.body().getResults().stream().filter(new Predicate<MovieReccQueryResultDTO.ReccomendedMovieDTO>() {
+                                                                @Override
+                                                                public boolean test(MovieReccQueryResultDTO.ReccomendedMovieDTO reccomendedMovieDTO) {
+                                                                    return reccomendedMovieDTO.getPoster_path()!=null && reccomendedMovieDTO.getPoster_path().length()!=0;
+                                                                }
+                                                            }).collect(Collectors.toList());
                                     }
                                 } else {
                                     if(onEmptyResults!=null)
@@ -73,7 +79,6 @@ public class ReccomendedRecylerAdapter extends RecyclerView.Adapter<ReccomendedR
                                     return;
                                 }
                             }
-
                             @Override
                             public void onFailure(Call<MovieReccQueryResultDTO> call, Throwable t) {
                                 reccomendedMovies = new ArrayList<>();

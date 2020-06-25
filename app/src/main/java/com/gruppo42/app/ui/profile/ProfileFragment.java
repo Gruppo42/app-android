@@ -133,8 +133,6 @@ public class ProfileFragment extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!imageAvailable)
-                    return;
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {

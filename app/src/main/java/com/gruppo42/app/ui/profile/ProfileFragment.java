@@ -37,6 +37,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.gruppo42.app.R;
 import com.gruppo42.app.activities.Login;
 import com.gruppo42.app.activities.MainActivity;
+import com.gruppo42.app.activities.SignUpSuccess;
+import com.gruppo42.app.activities.Signup;
 import com.gruppo42.app.activities.SplashScreenActivity;
 import com.gruppo42.app.session.SessionManager;
 import com.gruppo42.app.ui.dialogs.ChangeListener;
@@ -70,6 +72,18 @@ public class ProfileFragment extends Fragment {
         this.container = container;
         this.sessionManager = new SessionManager(getContext());
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        if(!sessionManager.isLoggedIn()) {
+            root.findViewById(R.id.profileview).setVisibility(View.GONE);
+            root.findViewById(R.id.loginToClick).setVisibility(View.VISIBLE);
+            root.findViewById(R.id.loginToClick).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), Login.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+            });
+        }
         this.nameSurname = root.findViewById(R.id.textViewNameSurname);
         this.username = root.findViewById(R.id.textViewUsername);
         this.shimmer = root.findViewById(R.id.shimmer_view_container);

@@ -1,6 +1,7 @@
 package com.gruppo42.app.ui.search;
 
         import android.os.Bundle;
+        import android.os.Handler;
         import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.MenuItem;
@@ -76,6 +77,7 @@ public class SearchFragment extends Fragment
         MenuItem s = toolbar.getMenu().getItem(0);
         SearchView s2 = (SearchView) s.getActionView();
         s2.setClickable(true);
+
         s2.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query)
@@ -90,6 +92,7 @@ public class SearchFragment extends Fragment
                 return false;
             }
         });
+
         regionChip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +102,7 @@ public class SearchFragment extends Fragment
                 performQuery(s2.getQuery().toString(), adapter, noDataview);
             }
         });
+
         regionChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +122,7 @@ public class SearchFragment extends Fragment
                 regionPickDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.region_select));
             }
         });
+
         languageChip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +132,7 @@ public class SearchFragment extends Fragment
                 performQuery(s2.getQuery().toString(), adapter, noDataview);
             }
         });
+
         languageChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,6 +152,7 @@ public class SearchFragment extends Fragment
                 languagePickDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.language_select));
             }
         });
+
         yearChip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +162,7 @@ public class SearchFragment extends Fragment
                 performQuery(s2.getQuery().toString(), adapter, noDataview);
             }
         });
+
         yearChip.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -173,6 +181,7 @@ public class SearchFragment extends Fragment
                 yearPickDialogs.show(getActivity().getSupportFragmentManager(), getString(R.string.year_select));
             }
         });
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -251,26 +260,31 @@ public class SearchFragment extends Fragment
 
     private void performQuery(String query, RecyclerViewAdapter adapter, View noDataview)
     {
-        Log.d("performQuery", "performing query with:" +
-                                        "\nLanguage: "+params.get("language")+
-                                        "\nQuery: " + query+
-                                        "\nRegion: "+params.get("region")+
-                                        "\nYear: "+params.get("year"));
-        adapter.findMovieWith((Constants.MOVIES_API_KEY),
-                params.get("language"),
-                query,
-                params.get("region"),
-                params.get("year"));
-        adapter.addEmptyListener(new EmptyListener() {
+        new Handler().post(new Runnable() {
             @Override
-            public void onEmptyResult() {
-                recyclerView.setVisibility(View.GONE);
-                noDataview.setVisibility(View.VISIBLE);
-            }
-            @Override
-            public void onResult() {
-                noDataview.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
+            public void run() {
+                Log.d("performQuery", "performing query with:" +
+                        "\nLanguage: "+params.get("language")+
+                        "\nQuery: " + query+
+                        "\nRegion: "+params.get("region")+
+                        "\nYear: "+params.get("year"));
+                adapter.findMovieWith((Constants.MOVIES_API_KEY),
+                        params.get("language"),
+                        query,
+                        params.get("region"),
+                        params.get("year"));
+                adapter.addEmptyListener(new EmptyListener() {
+                    @Override
+                    public void onEmptyResult() {
+                        recyclerView.setVisibility(View.GONE);
+                        noDataview.setVisibility(View.VISIBLE);
+                    }
+                    @Override
+                    public void onResult() {
+                        noDataview.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
     }

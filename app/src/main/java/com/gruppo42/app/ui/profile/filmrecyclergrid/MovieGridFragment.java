@@ -24,6 +24,7 @@ public class MovieGridFragment extends Fragment {
 
     private List<String> movieIDS;
     private MovieGridAdapter adapter;
+    private View nothingFound;
 
     public static MovieGridFragment newInstance() {
         return new MovieGridFragment();
@@ -42,7 +43,7 @@ public class MovieGridFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.movie_grid_fragment, container, false);
-        TextView nothingFound = root.findViewById(R.id.textViewNothing);
+        nothingFound = root.findViewById(R.id.textViewNothing);
         RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recyclerGrid);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4, RecyclerView.VERTICAL, false));
         this.adapter = new MovieGridAdapter(this.getContext(), this.movieIDS);
@@ -50,8 +51,7 @@ public class MovieGridFragment extends Fragment {
         recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 20);
         int spanCount = 4; // 3 columns
         int spacing = 5; // 50px
-        boolean includeEdge = true;
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
         if(this.movieIDS.size()==0)
             nothingFound.setVisibility(View.VISIBLE);
         return root;
@@ -72,7 +72,12 @@ public class MovieGridFragment extends Fragment {
     }
 
     public void setMovieIDS(List<String> movieIDS) {
+        if(movieIDS!=null && movieIDS.size()!=0)
+            nothingFound.setVisibility(View.GONE);
+        if(movieIDS==null)
+            return;
         this.movieIDS = movieIDS;
+        adapter.setMovieIDs(movieIDS);
     }
 
 }

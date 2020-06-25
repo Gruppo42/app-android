@@ -9,6 +9,7 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -113,46 +114,51 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 if(!imageAvailable)
                     return;
-                BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
-                ///EditorFragment dialogEditor = new EditorFragment(bitmap, nameSurname.getText()+"", username.getText()+"", email);
-                EditorFragment dialogEditor = new EditorFragment(bitmap, nameSurname.getText()+"", username.getText()+"", email);
-                dialogEditor.show(getParentFragmentManager(), "tag");
-                dialogEditor.setImageListener(new ChangeListener() {
+                new Handler().post(new Runnable() {
                     @Override
-                    public void onChange(Object object) {
-                        Pair<String, Bitmap> pair = (Pair<String, Bitmap>) object;
-                        Glide.with(getContext())
-                                .asBitmap()
-                                .load(pair.second)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .circleCrop()
-                                .into(imageView);
-                    }
-                });
-                dialogEditor.setMailListener(new ChangeListener() {
-                    @Override
-                    public void onChange(Object object) {
-                    }
-                });
-                dialogEditor.setNameListener(new ChangeListener() {
-                    @Override
-                    public void onChange(Object object) {
-                        nameSurname.setText((String)object);
-                    }
-                });
-                dialogEditor.setOnLogout(new ChangeListener() {
-                    @Override
-                    public void onChange(Object object) {
-                        sessionManager.logoutFromSession();
-                        getActivity().finish();
-                    }
-                });
-                dialogEditor.setOnDelete(new ChangeListener() {
-                    @Override
-                    public void onChange(Object object) {
-                        sessionManager.logoutFromSession();
-                        getActivity().finish();
+                    public void run() {
+                        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                        Bitmap bitmap = drawable.getBitmap();
+                        ///EditorFragment dialogEditor = new EditorFragment(bitmap, nameSurname.getText()+"", username.getText()+"", email);
+                        EditorFragment dialogEditor = new EditorFragment(bitmap, nameSurname.getText()+"", username.getText()+"", email);
+                        dialogEditor.show(getParentFragmentManager(), "tag");
+                        dialogEditor.setImageListener(new ChangeListener() {
+                            @Override
+                            public void onChange(Object object) {
+                                Pair<String, Bitmap> pair = (Pair<String, Bitmap>) object;
+                                Glide.with(getContext())
+                                        .asBitmap()
+                                        .load(pair.second)
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .circleCrop()
+                                        .into(imageView);
+                            }
+                        });
+                        dialogEditor.setMailListener(new ChangeListener() {
+                            @Override
+                            public void onChange(Object object) {
+                            }
+                        });
+                        dialogEditor.setNameListener(new ChangeListener() {
+                            @Override
+                            public void onChange(Object object) {
+                                nameSurname.setText((String)object);
+                            }
+                        });
+                        dialogEditor.setOnLogout(new ChangeListener() {
+                            @Override
+                            public void onChange(Object object) {
+                                sessionManager.logoutFromSession();
+                                getActivity().finish();
+                            }
+                        });
+                        dialogEditor.setOnDelete(new ChangeListener() {
+                            @Override
+                            public void onChange(Object object) {
+                                sessionManager.logoutFromSession();
+                                getActivity().finish();
+                            }
+                        });
                     }
                 });
             }
@@ -181,73 +187,77 @@ public class ProfileFragment extends Fragment {
         profileViewModel.getUsername().observeForever(s -> {
             this.username.setText("@"+s);
         });
-        profileViewModel.getProfileImage().observeForever(s -> {
-            if(s==null || s.length()==0) {
-                Glide.with(this.container.getContext())
-                        .asBitmap()
-                        .load(R.drawable.profile_placeholder)
-                        .placeholder(new ColorDrawable(Color.GRAY))
-                        .error(new ColorDrawable(Color.GRAY))
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .circleCrop()
-                        .addListener(new RequestListener<Bitmap>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                                shimmer.stopShimmer();
-                                shimmer.setVisibility(View.GONE);
-                                imageView.setVisibility(View.VISIBLE);
-                                return false;
-                            }
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                profileViewModel.getProfileImage().observeForever(s -> {
+                    if(s==null || s.length()==0) {
+                        Glide.with(container.getContext())
+                                .asBitmap()
+                                .load(R.drawable.profile_placeholder)
+                                .placeholder(new ColorDrawable(Color.GRAY))
+                                .error(new ColorDrawable(Color.GRAY))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .circleCrop()
+                                .addListener(new RequestListener<Bitmap>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                        shimmer.stopShimmer();
+                                        shimmer.setVisibility(View.GONE);
+                                        imageView.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
 
-                            @Override
-                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                                shimmer.stopShimmer();
-                                shimmer.setVisibility(View.GONE);
-                                imageView.setVisibility(View.VISIBLE);
-                                return false;
-                            }
-                        })
-                        .into(imageView);
-                return;
+                                    @Override
+                                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                        shimmer.stopShimmer();
+                                        shimmer.setVisibility(View.GONE);
+                                        imageView.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
+                                })
+                                .into(imageView);
+                        return;
+                    }
+                    decodedString = Base64.decode(s, Base64.DEFAULT);
+                    //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    Glide.with(container.getContext())
+                            .asBitmap()
+                            .load(decodedString)
+                            .placeholder(new ColorDrawable(Color.GRAY))
+                            .error(new ColorDrawable(Color.GRAY))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .circleCrop()
+                            .addListener(new RequestListener<Bitmap>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                    shimmer.stopShimmer();
+                                    shimmer.setVisibility(View.GONE);
+                                    imageView.setVisibility(View.VISIBLE);
+                                    return false;
+                                }
+                                @Override
+                                public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                    shimmer.stopShimmer();
+                                    shimmer.setVisibility(View.GONE);
+                                    imageView.setVisibility(View.VISIBLE);
+                                    imageAvailable = true;
+                                    return false;
+                                }
+                            })
+                            .into(imageView);
+                });
             }
-            decodedString = Base64.decode(s, Base64.DEFAULT);
-            //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            Glide.with(this.container.getContext())
-                    .asBitmap()
-                    .load(decodedString)
-                    .placeholder(new ColorDrawable(Color.GRAY))
-                    .error(new ColorDrawable(Color.GRAY))
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .circleCrop()
-                    .addListener(new RequestListener<Bitmap>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                            shimmer.stopShimmer();
-                            shimmer.setVisibility(View.GONE);
-                            imageView.setVisibility(View.VISIBLE);
-                            return false;
-                        }
-                        @Override
-                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                            shimmer.stopShimmer();
-                            shimmer.setVisibility(View.GONE);
-                            imageView.setVisibility(View.VISIBLE);
-                            imageAvailable = true;
-                            return false;
-                        }
-                    })
-                    .into(imageView);
         });
+
         profileViewModel.getFavorites().observeForever(l -> {
             this.adapter.setFavList(l);
             this.favlistCount.setText(new String(l.size()+""));
-            adapter.notifyDataSetChanged();
         });
 
         profileViewModel.getWatchlist().observeForever(l -> {
             this.adapter.setWatchlist(l);
             this.watchlistCount.setText(new String(l.size()+""));
-            adapter.notifyDataSetChanged();
         });
     }
 }

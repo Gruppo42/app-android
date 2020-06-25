@@ -78,6 +78,7 @@ public class MoviesByDateOrGenreFragment extends Fragment {
                 Navigation.findNavController(view).navigate(action);
             }
         });
+        binding.moviesRecyclerView.setNestedScrollingEnabled(true);
         binding.moviesRecyclerView.setAdapter(homeRecyclerViewAdapter);
         //recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 10); DA CHIAMARE PER OGNI RECYCLER VIEW (per ottimizzare)
         binding.moviesRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 20);

@@ -16,6 +16,7 @@
     <string name="camera">Open camera</string>
     <string name="proceed">Proceed</string>
     <string name="gallery">Open gallery</string>
+    <string name="guest">Enter as guest</string>
     <string name="acc_created">Account created!</string>
     <string name="logout">Logout</string>
     <string name="forgot_pass2">Forgot your password?</string>

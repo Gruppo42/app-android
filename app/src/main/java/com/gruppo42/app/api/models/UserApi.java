@@ -37,7 +37,18 @@ public interface UserApi {
     Call<UserApiResponse> signupUser(@Body SignUpRequest signUpRequest);
     @POST("auth/signin")
     Call<LoginResponse> signinUser(@Body LoginRequest loginRequest);
-
+    @POST("user/add_watchlist")
+    Call<UserApiResponse> addToWatchlist(@Header("AUTHORIZATION") String bearerToken,
+                                         @Query("movie_id") String movie_id);
+    @POST("user/add_favorite")
+    Call<UserApiResponse> addToFavorites(@Header("AUTHORIZATION") String bearerToken,
+                                         @Query("movie_id") String movie_id);
+    @DELETE("user/remove_watchlist")
+    Call<UserApiResponse> removeFromWatchlist(@Header("AUTHORIZATION") String bearerToken,
+                                              @Query("movie_id") String movie_id);
+    @DELETE("user/remove_favorite")
+    Call<UserApiResponse> removeFromFavorites(@Header("AUTHORIZATION") String bearerToken,
+                                              @Query("movie_id") String movie_id);
     class Instance {
 
         static UserApi instance;

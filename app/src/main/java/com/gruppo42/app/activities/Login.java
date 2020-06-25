@@ -52,6 +52,13 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+        binding.enterguest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
         binding.login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

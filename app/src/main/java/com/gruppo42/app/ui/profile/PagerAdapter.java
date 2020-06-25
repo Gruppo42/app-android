@@ -1,5 +1,7 @@
 package com.gruppo42.app.ui.profile;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -12,6 +14,8 @@ public class PagerAdapter extends FragmentStateAdapter {
 
     private List<String> favList;
     private List<String> watchlist;
+    private MovieGridFragment favFragment;
+    private MovieGridFragment watchlistFragment;
 
     public PagerAdapter(@NonNull Fragment fragment, List<String> favoritesList, List<String> watchList) {
         super(fragment);
@@ -22,10 +26,15 @@ public class PagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if(position==0)
-            return new MovieGridFragment(favList);
-        else
-            return new MovieGridFragment(watchlist);
+        Log.d("CREATE FRAAG*********", position+"");
+        if(position==0) {
+            favFragment = new MovieGridFragment(this.favList);
+            return favFragment;
+        }
+        else {
+            watchlistFragment = new MovieGridFragment(this.watchlist);
+            return watchlistFragment;
+        }
     }
 
     @Override
@@ -39,6 +48,8 @@ public class PagerAdapter extends FragmentStateAdapter {
 
     public void setFavList(List<String> favList) {
         this.favList = favList;
+        if(favFragment!=null)
+            favFragment.setMovieIDS(favList);
     }
 
     public List<String> getWatchlist() {
@@ -47,5 +58,8 @@ public class PagerAdapter extends FragmentStateAdapter {
 
     public void setWatchlist(List<String> watchlist) {
         this.watchlist = watchlist;
+        if(watchlistFragment!=null)
+            watchlistFragment.setMovieIDS(watchlist);
     }
+
 }

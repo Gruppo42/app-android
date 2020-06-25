@@ -6,6 +6,7 @@
         android:id="@+id/imageViewMoviePicture"
         android:layout_width="94dp"
         android:layout_height="141dp"
+        android:transitionName="poster"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:layout_marginLeft="4dp"
